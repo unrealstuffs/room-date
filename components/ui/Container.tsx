@@ -14,5 +14,6 @@ export default Container
 const styles = StyleSheet.create({
 	container: {
 		padding: 15,
+		flex: 1,
 	},
 })
