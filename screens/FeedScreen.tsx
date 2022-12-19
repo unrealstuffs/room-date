@@ -1,21 +1,58 @@
-import { Text } from 'react-native'
+import { useTheme } from 'styled-components/native'
+import { FlatList } from 'react-native'
+import Event from '../components/parts/Event'
+
 import HeaderRoom from '../components/parts/HeaderRoom'
-import Centered from '../components/ui/Centered'
-import Container from '../components/ui/Container'
-import Title from '../components/ui/Title'
-import Themes from '../constants/Themes'
+import Centered from '../components/styled/Centered.styled'
+import Container from '../components/styled/Container.styled'
+import StyledText from '../components/styled/Text.styled'
+import { Events, events } from '../constants/Data'
+
+interface RenderItemProps {
+	item: Events
+}
 
 const FeedScreen = () => {
+	const theme = useTheme()
+
+	const renderItem = ({ item }: RenderItemProps) =>
+		item.pinned ? <Event event={item} /> : null
+
 	return (
-		<Container>
-			<HeaderRoom />
-			<Title>Лента комнаты</Title>
-			<Centered>
-				<Text style={{ fontSize: 12, color: Themes.light.dark }}>
-					Закрепленные события появятся здесь...
-				</Text>
-			</Centered>
-		</Container>
+		<>
+			<Container
+				top={0}
+				bottom={0}
+				fullHeight={false}
+				backgroundColor={theme.colors.background}
+			>
+				<HeaderRoom />
+				<StyledText
+					fontSize={16}
+					fontWeight={700}
+					color={theme.colors.secondary}
+				>
+					Лента комнаты
+				</StyledText>
+			</Container>
+			{events.length ? (
+				<FlatList
+					contentContainerStyle={{
+						padding: 15,
+						backgroundColor: theme.colors.background,
+					}}
+					data={events}
+					renderItem={renderItem}
+					keyExtractor={event => event.id}
+				/>
+			) : (
+				<Centered>
+					<StyledText fontSize={12} color={theme.colors.dark}>
+						Закрепленные события появятся здесь...
+					</StyledText>
+				</Centered>
+			)}
+		</>
 	)
 }
 

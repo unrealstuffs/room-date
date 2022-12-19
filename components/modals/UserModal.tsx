@@ -1,20 +1,19 @@
-import { AntDesign } from '@expo/vector-icons'
 import { useState } from 'react'
-import {
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-	TouchableOpacity,
-	ActivityIndicator,
-} from 'react-native'
+import { useWindowDimensions, ActivityIndicator } from 'react-native'
+import { AntDesign } from '@expo/vector-icons'
 import { ModalComponentProp } from 'react-native-modalfy'
+import { useTheme } from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
-import { ModalStackParams } from '../../App'
+
+import { ModalStackParams } from '../../providers/ModalConfigProvider'
 import { useActions } from '../../hooks/useActions'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
 import Avatar from '../parts/Avatar'
-import Themes from '../../constants/Themes'
+
+import Flex from '../styled/Flex.styled'
+import StyledText from '../styled/Text.styled'
+import { StyledButton } from '../styled/Button.styled'
+import StyledModal from '../styled/Modal.styled'
 
 const UserModal = ({
 	modal: { closeModal },
@@ -23,6 +22,7 @@ const UserModal = ({
 	const { setUser } = useActions()
 	const { user } = useTypedSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
+	const theme = useTheme()
 
 	const googleSignOut = async () => {
 		setLoading(true)
@@ -37,68 +37,44 @@ const UserModal = ({
 	}
 
 	return (
-		<View style={[styles.modal, { width: width * 0.85 }]}>
-			<View style={styles.header}>
-				<View style={styles.user}>
+		<StyledModal
+			backgroundColor={theme.colors.white}
+			style={{ width: width * 0.85 }}
+		>
+			<Flex justifyContent='space-between' style={{ marginBottom: 20 }}>
+				<Flex justifyContent='space-between' alignItems='center'>
 					<Avatar size={45} uri={user?.photoURL} />
-					<Text style={styles.name}>
+					<StyledText
+						fontSize={14}
+						style={{ marginLeft: 10 }}
+						color={theme.colors.secondary}
+					>
 						{user ? user.displayName : 'Не доступно'}
-					</Text>
-				</View>
+					</StyledText>
+				</Flex>
 				<AntDesign
 					onPress={() => closeModal()}
 					name='close'
 					size={20}
 				/>
-			</View>
-			<View>
-				<TouchableOpacity
-					activeOpacity={0.6}
-					disabled={loading}
-					style={[styles.button, { opacity: loading ? 0.6 : 1 }]}
-					onPress={googleSignOut}
-				>
-					<Text style={styles.textButton}>
-						{loading ? (
-							<ActivityIndicator color='#fff' />
-						) : (
-							'Выйти из аккаунта'
-						)}
-					</Text>
-				</TouchableOpacity>
-			</View>
-		</View>
+			</Flex>
+			<StyledButton
+				activeOpacity={0.6}
+				disabled={loading}
+				opacity={loading ? 0.6 : 1}
+				onPress={googleSignOut}
+				backgroundColor={theme.colors.primary}
+			>
+				<StyledText color={theme.colors.white}>
+					{loading ? (
+						<ActivityIndicator color={theme.colors.white} />
+					) : (
+						'Выйти из аккаунта'
+					)}
+				</StyledText>
+			</StyledButton>
+		</StyledModal>
 	)
 }
 
 export default UserModal
-
-const styles = StyleSheet.create({
-	modal: {
-		backgroundColor: '#fff',
-		padding: 10,
-		borderRadius: 8,
-	},
-	header: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginBottom: 20,
-	},
-	user: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	name: {
-		marginLeft: 10,
-	},
-	button: {
-		padding: 10,
-		backgroundColor: Themes.light.primary,
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderRadius: 8,
-	},
-	textButton: {
-		color: '#fff',
-	},
-})

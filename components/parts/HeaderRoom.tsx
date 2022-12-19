@@ -1,54 +1,31 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Avatar from './Avatar'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { View } from 'react-native'
 import { useModal } from 'react-native-modalfy'
 
+import Avatar from './Avatar'
+
+import Flex from '../styled/Flex.styled'
+import { members } from '../../constants/Data'
+
 const HeaderRoom = () => {
-	const { user } = useTypedSelector(state => state.user)
 	const { openModal } = useModal()
 	return (
-		<View style={styles.members}>
-			<View style={styles.member}>
-				<Avatar
-					size={40}
-					uri={user?.photoURL}
-					onPress={() => openModal('MemberModal')}
-				/>
-			</View>
-			<View style={styles.member}>
-				<Avatar
-					size={40}
-					uri={user?.photoURL}
-					onPress={() => openModal('MemberModal')}
-				/>
-			</View>
-			<View style={styles.member}>
-				<Avatar
-					size={40}
-					uri={user?.photoURL}
-					onPress={() => openModal('MemberModal')}
-				/>
-			</View>
-			<View style={styles.member}>
-				<Avatar
-					size={40}
-					uri={user?.photoURL}
-					onPress={() => openModal('MemberModal')}
-				/>
-			</View>
-		</View>
+		<Flex style={{ marginBottom: 20 }}>
+			{members.map(member => (
+				<View key={member.id} style={{ marginRight: 10 }}>
+					<Avatar
+						size={40}
+						uri={member?.photoURL}
+						onPress={() =>
+							openModal('MemberModal', {
+								name: member.name,
+								photoURL: member.photoURL,
+							})
+						}
+					/>
+				</View>
+			))}
+		</Flex>
 	)
 }
 
 export default HeaderRoom
-
-const styles = StyleSheet.create({
-	members: {
-		flexDirection: 'row',
-		marginBottom: 20,
-	},
-	member: {
-		marginRight: 10,
-	},
-})

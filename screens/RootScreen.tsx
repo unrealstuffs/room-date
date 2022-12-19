@@ -1,109 +1,65 @@
-import { AntDesign } from '@expo/vector-icons'
-import {
-	BottomSheetModal,
-	BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet'
-import { useCallback, useRef, useEffect, useMemo } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import FormCreateRoom from '../components/forms/FormCreateRoom'
-import FormJoinRoom from '../components/forms/FormJoinRoom'
+import { useEffect } from 'react'
+import { FlatList } from 'react-native'
+import { useTheme } from 'styled-components/native'
+
+import RootActionsModal from '../components/modals/RootActionsModal'
 import Room from '../components/parts/Room'
-import Container from '../components/ui/Container'
-import Title from '../components/ui/Title'
-import Themes from '../constants/Themes'
+import Centered from '../components/styled/Centered.styled'
+import Container from '../components/styled/Container.styled'
+import StyledText from '../components/styled/Text.styled'
+import { Rooms } from '../constants/Data'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { RootStackScreenProps } from '../types'
 
+interface RenderItemProps {
+	item: Rooms
+}
+
 const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
+	const theme = useTheme()
 	const { user } = useTypedSelector(state => state.user)
 	const { rooms } = useTypedSelector(state => state.data)
-
-	const snapPoints = useMemo(() => ['30', '50'], [])
-
-	const createRoomBottomModal = useRef<BottomSheetModal>(null)
-	const joinRoomBottomModal = useRef<BottomSheetModal>(null)
-
-	const handlePresentCreateRoomForm = useCallback(() => {
-		createRoomBottomModal.current?.present()
-	}, [])
-
-	const handlePresentJoinRoomForm = useCallback(() => {
-		joinRoomBottomModal.current?.present()
-	}, [])
 
 	useEffect(() => {
 		!user && navigation.navigate('Login')
 	}, [user])
 
+	const renderItem = ({ item }: RenderItemProps) => (
+		<Room onPress={() => navigation.navigate('Room')} room={item} />
+	)
+
 	return (
-		<Container backgroundColor={Themes.light.background}>
-			<Title>Список комнат</Title>
-			{rooms.map(room => (
-				<Room
-					key={room.id}
-					onPress={() => navigation.navigate('Room')}
-					{...room}
+		<>
+			<Container backgroundColor={theme.colors.background}>
+				<StyledText
+					fontSize={16}
+					fontWeight={700}
+					color={theme.colors.secondary}
+				>
+					Список комнат
+				</StyledText>
+			</Container>
+			{rooms.length ? (
+				<FlatList
+					contentContainerStyle={{
+						padding: 15,
+						backgroundColor: theme.colors.background,
+					}}
+					data={rooms}
+					renderItem={renderItem}
+					keyExtractor={event => event.id}
 				/>
-			))}
+			) : (
+				<Centered>
+					<StyledText fontSize={12} color={theme.colors.dark}>
+						Созданные комнаты появятся здесь...
+					</StyledText>
+				</Centered>
+			)}
 
-			<BottomSheetModalProvider>
-				<View style={styles.buttons}>
-					<TouchableOpacity
-						style={styles.button}
-						onPress={handlePresentJoinRoomForm}
-					>
-						<AntDesign name='addusergroup' size={23} color='#fff' />
-					</TouchableOpacity>
-
-					<TouchableOpacity
-						style={styles.button}
-						onPress={handlePresentCreateRoomForm}
-					>
-						<AntDesign name='plus' size={23} color='#fff' />
-					</TouchableOpacity>
-
-					<BottomSheetModal
-						ref={joinRoomBottomModal}
-						index={1}
-						snapPoints={snapPoints}
-						handleIndicatorStyle={{
-							backgroundColor: Themes.light.light,
-						}}
-					>
-						<FormJoinRoom />
-					</BottomSheetModal>
-
-					<BottomSheetModal
-						ref={createRoomBottomModal}
-						index={1}
-						snapPoints={snapPoints}
-						handleIndicatorStyle={{
-							backgroundColor: Themes.light.light,
-						}}
-					>
-						<FormCreateRoom />
-					</BottomSheetModal>
-				</View>
-			</BottomSheetModalProvider>
-		</Container>
+			<RootActionsModal />
+		</>
 	)
 }
 
 export default RootScreen
-
-const styles = StyleSheet.create({
-	buttons: {
-		position: 'absolute',
-		bottom: 15,
-		right: 15,
-	},
-	button: {
-		width: 60,
-		height: 60,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: Themes.light.primary,
-		borderRadius: 999,
-		marginTop: 15,
-	},
-})

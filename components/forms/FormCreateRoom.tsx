@@ -1,18 +1,18 @@
-import {
-	ActivityIndicator,
-	StyleSheet,
-	Text,
-	TextInput,
-	View,
-} from 'react-native'
 import { useState } from 'react'
-import Separator from '../ui/Separator'
-import { BottomSheetTextInput, useBottomSheet } from '@gorhom/bottom-sheet'
-import Themes from '../../constants/Themes'
-import Button from '../ui/Button'
+import { ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { useTheme } from 'styled-components/native'
+import { AntDesign } from '@expo/vector-icons'
+
+import Separator from '../styled/Separator.styled'
+import StyledText from '../styled/Text.styled'
+import { StyledInput, StyledInputWithIcon } from '../styled/Input.styled'
+import { StyledButton } from '../styled/Button.styled'
+import Container from '../styled/Container.styled'
 
 const FormCreateRoom = () => {
+	const theme = useTheme()
+
 	const navigation = useNavigation()
 	const [loading, setLoading] = useState(false)
 	const [isCreated, setIsCreated] = useState(false)
@@ -30,72 +30,83 @@ const FormCreateRoom = () => {
 	}
 
 	return (
-		<View>
-			<View style={styles.padding}>
-				<Text style={styles.title}>Создать комнату</Text>
-			</View>
-			<Separator />
-			<View style={styles.padding}>
-				<BottomSheetTextInput
-					style={[
-						styles.input,
-						{ borderColor: Themes.light.light, marginBottom: 10 },
-					]}
+		<>
+			<Container
+				top={0}
+				bottom={0}
+				backgroundColor={theme.colors.background}
+			>
+				<StyledText
+					color={theme.colors.secondary}
+					style={{ textAlign: 'center' }}
+				>
+					Создать комнату
+				</StyledText>
+			</Container>
+			<Separator color={theme.colors.light} />
+			<Container
+				top={0}
+				bottom={0}
+				backgroundColor={theme.colors.background}
+			>
+				<StyledInput
+					borderColor={theme.colors.light}
 					placeholder='Название...'
+					style={{ marginBottom: 15 }}
 				/>
-				<BottomSheetTextInput
-					style={[styles.input, { borderColor: Themes.light.light }]}
+				<StyledInput
+					borderColor={theme.colors.light}
 					placeholder='Категория...'
 				/>
-			</View>
-			<Separator />
-			<View style={styles.padding}>
+			</Container>
+			<Separator color={theme.colors.light} />
+			<Container
+				top={0}
+				bottom={0}
+				backgroundColor={theme.colors.background}
+			>
 				{isCreated ? (
 					<>
-						<TextInput
-							style={[
-								styles.input,
-								{
-									borderColor: Themes.light.light,
-									marginBottom: 10,
-								},
-							]}
-							value='#27542286940'
-						/>
-						<Button onPress={handleEnterRoom}>
-							{loading ? (
-								<ActivityIndicator color='#fff' />
-							) : (
-								'Перейти в комнату'
-							)}
-						</Button>
+						<StyledInputWithIcon>
+							<StyledInput
+								borderColor={theme.colors.light}
+								value='#27542286940'
+							/>
+							<AntDesign name='copy1' size={20} />
+						</StyledInputWithIcon>
+						<StyledButton
+							backgroundColor={theme.colors.primary}
+							onPress={handleEnterRoom}
+						>
+							<StyledText>
+								{loading ? (
+									<ActivityIndicator
+										color={theme.colors.white}
+									/>
+								) : (
+									'Перейти в комнату'
+								)}
+							</StyledText>
+						</StyledButton>
 					</>
 				) : (
-					<Button onPress={handleCreateRoom} disabled={loading}>
-						{loading ? (
-							<ActivityIndicator color='#fff' />
-						) : (
-							'Создать'
-						)}
-					</Button>
+					<StyledButton
+						backgroundColor={theme.colors.primary}
+						onPress={handleCreateRoom}
+						disabled={loading}
+					>
+						<StyledText>
+							{loading ? (
+								<ActivityIndicator color={theme.colors.white} />
+							) : (
+								'Создать'
+							)}
+						</StyledText>
+					</StyledButton>
 				)}
-			</View>
-		</View>
+			</Container>
+		</>
 	)
 }
 
 export default FormCreateRoom
-
-const styles = StyleSheet.create({
-	padding: {
-		paddingHorizontal: 15,
-	},
-	title: {
-		textAlign: 'center',
-	},
-	input: {
-		borderWidth: 1,
-		padding: 10,
-		borderRadius: 8,
-	},
-})

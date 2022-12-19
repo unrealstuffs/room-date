@@ -1,5 +1,4 @@
 import { Image, TouchableOpacity } from 'react-native'
-import React from 'react'
 
 interface AvatarProps {
 	onPress?: () => void
@@ -9,11 +8,17 @@ interface AvatarProps {
 
 const Avatar = ({ onPress, size, uri }: AvatarProps) => {
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={onPress}>
-			<Image
-				source={{ uri }}
-				style={{ width: size, height: size, borderRadius: 999 }}
-			/>
+		<TouchableOpacity
+			activeOpacity={0.7}
+			onPress={onPress}
+			style={{ backgroundColor: '#fff', borderRadius: 999, elevation: 4 }}
+		>
+			{uri && (
+				<Image
+					source={{ uri }}
+					style={{ width: size, height: size, borderRadius: 999 }}
+				/>
+			)}
 		</TouchableOpacity>
 	)
 }

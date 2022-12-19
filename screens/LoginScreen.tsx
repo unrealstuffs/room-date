@@ -1,31 +1,31 @@
-import { StyleSheet, Text, View } from 'react-native'
 import { useEffect, useState } from 'react'
-import { RootStackScreenProps } from '../types'
-import Container from '../components/ui/Container'
 import { AntDesign } from '@expo/vector-icons'
+import { useTheme } from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import {
 	GoogleSignin,
 	GoogleSigninButton,
 } from '@react-native-google-signin/google-signin'
+
+import { RootStackScreenProps } from '../types'
+import Container from '../components/styled/Container.styled'
 import { useTypedSelector } from '../hooks/useTypedSelector'
+import Centered from '../components/styled/Centered.styled'
+import StyledText from '../components/styled/Text.styled'
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
 	const { user } = useTypedSelector(state => state.user)
 	const [loading, setLoading] = useState(false)
+	const theme = useTheme()
 
 	async function onGoogleButtonPress() {
-		// Check if your device supports Google Play
 		await GoogleSignin.hasPlayServices({
 			showPlayServicesUpdateDialog: true,
 		})
-		// Get the users ID token
 		const { idToken } = await GoogleSignin.signIn()
 
-		// Create a Google credential with the token
 		const googleCredential = auth.GoogleAuthProvider.credential(idToken)
 
-		// Sign-in the user with the credential
 		return auth().signInWithCredential(googleCredential)
 	}
 
@@ -34,13 +34,21 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
 	}, [user])
 
 	return (
-		<Container>
-			<View style={styles.login}>
+		<Container fullHeight={true} backgroundColor={theme.colors.background}>
+			<Centered>
 				<AntDesign name='appstore-o' size={60} />
-				<Text style={styles.text}>
+				<StyledText
+					fontSize={18}
+					color={theme.colors.secondary}
+					style={{
+						marginTop: 10,
+						marginBottom: 60,
+						textAlign: 'center',
+					}}
+				>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
 					ullam nisi animi? Exercitationem, quisquam animi?
-				</Text>
+				</StyledText>
 				<GoogleSigninButton
 					color={GoogleSigninButton.Color.Dark}
 					size={GoogleSigninButton.Size.Wide}
@@ -53,23 +61,9 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
 							.catch(err => console.log(err))
 					}}
 				></GoogleSigninButton>
-			</View>
+			</Centered>
 		</Container>
 	)
 }
 
 export default LoginScreen
-
-const styles = StyleSheet.create({
-	login: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		flex: 1,
-	},
-	text: {
-		marginTop: 10,
-		marginBottom: 60,
-		fontSize: 18,
-		textAlign: 'center',
-	},
-})

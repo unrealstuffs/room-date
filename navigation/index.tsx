@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import * as React from 'react'
 import { Pressable } from 'react-native'
 import { useModal } from 'react-native-modalfy'
 
@@ -18,14 +17,16 @@ import SettingsScreen from '../screens/SettingsScreen'
 import RootScreen from '../screens/RootScreen'
 import Avatar from '../components/parts/Avatar'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import Themes from '../constants/Themes'
 import HeaderRoot from '../components/parts/HeaderRoot'
+import { useTheme } from 'styled-components/native'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default function RootNavigator() {
 	const { user } = useTypedSelector(state => state.user)
 	const { openModal } = useModal()
+	const theme = useTheme()
+
 	return (
 		<Stack.Navigator initialRouteName='Root'>
 			<Stack.Screen
@@ -46,7 +47,7 @@ export default function RootNavigator() {
 						/>
 					),
 					headerShadowVisible: false,
-					headerStyle: { backgroundColor: Themes.light.background },
+					headerStyle: { backgroundColor: theme.colors.background },
 				})}
 			/>
 			<Stack.Screen
@@ -66,13 +67,18 @@ export default function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>()
 
 function BottomTabNavigator() {
+	const { openModal } = useModal()
+	const theme = useTheme()
 	return (
 		<BottomTab.Navigator
 			initialRouteName='Feed'
 			screenOptions={{
-				tabBarActiveTintColor: Themes.light.primary,
+				tabBarActiveTintColor: theme.colors.primary,
 				headerTitle: '#133769420',
 				headerTitleAlign: 'center',
+				headerShadowVisible: false,
+				headerStyle: { backgroundColor: theme.colors.background },
+				tabBarStyle: { backgroundColor: theme.colors.background },
 			}}
 		>
 			<BottomTab.Screen
@@ -93,14 +99,14 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='arrowleft'
 								size={25}
-								color={Themes.light.secondary}
+								color={theme.colors.secondary}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
 					),
 					headerRight: () => (
 						<Pressable
-							onPress={() => {}}
+							onPress={() => openModal('CodeModal')}
 							style={({ pressed }) => ({
 								opacity: pressed ? 0.5 : 1,
 							})}
@@ -108,7 +114,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='qrcode'
 								size={25}
-								color={Themes.light.secondary}
+								color={theme.colors.secondary}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -133,14 +139,14 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='arrowleft'
 								size={25}
-								color={Themes.light.secondary}
+								color={theme.colors.secondary}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
 					),
 					headerRight: () => (
 						<Pressable
-							onPress={() => {}}
+							onPress={() => openModal('CodeModal')}
 							style={({ pressed }) => ({
 								opacity: pressed ? 0.5 : 1,
 							})}
@@ -148,7 +154,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='qrcode'
 								size={25}
-								color={Themes.light.secondary}
+								color={theme.colors.secondary}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -159,7 +165,7 @@ function BottomTabNavigator() {
 				name='Settings'
 				component={SettingsScreen}
 				options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
-					title: 'События',
+					title: 'Настройки',
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='setting' color={color} />
 					),
@@ -173,14 +179,14 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='arrowleft'
 								size={25}
-								color={Themes.light.secondary}
+								color={theme.colors.secondary}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
 					),
 					headerRight: () => (
 						<Pressable
-							onPress={() => {}}
+							onPress={() => openModal('CodeModal')}
 							style={({ pressed }) => ({
 								opacity: pressed ? 0.5 : 1,
 							})}
@@ -188,7 +194,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='qrcode'
 								size={25}
-								color={Themes.light.secondary}
+								color={theme.colors.secondary}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>

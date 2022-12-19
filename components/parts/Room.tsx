@@ -1,60 +1,68 @@
-import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
-import React from 'react'
+import { TouchableNativeFeedback } from 'react-native'
+import styled, { useTheme } from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons'
-import Themes from '../../constants/Themes'
+
+import StyledText from '../styled/Text.styled'
+import Flex from '../styled/Flex.styled'
+import { Rooms } from '../../constants/Data'
 
 interface RoomProps {
-	id: string
-	title: string
-	category: string
-	members: string[]
+	room: Rooms
 	onPress: () => void
 }
 
-const Room = ({ id, title, category, members, onPress }: RoomProps) => {
+const StyledCard = styled.View<{ backgroundColor: string }>`
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-radius: 8px;
+	background-color: ${props => props.backgroundColor};
+`
+
+const Room = ({ room, onPress }: RoomProps) => {
+	const theme = useTheme()
+
 	return (
 		<TouchableNativeFeedback onPress={onPress}>
-			<View style={styles.container}>
-				<View>
-					<Text style={styles.title}>Room {title ? title : id}</Text>
-					<Text style={styles.info}>
-						{members.length} members . {category}
-					</Text>
-				</View>
-				<View>
-					<AntDesign
-						name='arrowright'
-						color={Themes.light.dark}
-						size={20}
-					/>
-				</View>
-			</View>
+			<StyledCard
+				style={{ elevation: 4 }}
+				backgroundColor={theme.colors.white}
+			>
+				<Flex flexDirection='column'>
+					<StyledText
+						fontSize={14}
+						fontWeight={700}
+						color={theme.colors.secondary}
+						style={{ marginBottom: 5 }}
+					>
+						Room {room.title ? room.title : room.id}
+					</StyledText>
+					<StyledText color={theme.colors.dark} fontSize={12}>
+						{room.members.length} участников{' '}
+						<AntDesign
+							name='doubleright'
+							style={{ marginHorizontal: 10 }}
+							size={10}
+						/>{' '}
+						{room.category}{' '}
+						<AntDesign
+							name='doubleright'
+							style={{ marginHorizontal: 10 }}
+							size={10}
+						/>{' '}
+						{room.events.length} Событий
+					</StyledText>
+				</Flex>
+				<AntDesign
+					name='arrowright'
+					color={theme.colors.primary}
+					size={20}
+				/>
+			</StyledCard>
 		</TouchableNativeFeedback>
 	)
 }
 
 export default Room
-
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		padding: 10,
-		marginBottom: 10,
-		borderRadius: 8,
-		backgroundColor: '#fff',
-		elevation: 4,
-	},
-	title: {
-		fontSize: 14,
-		fontFamily: 'open-sans-reg',
-		marginBottom: 5,
-		fontWeight: '700',
-		color: Themes.light.secondary,
-	},
-	info: {
-		color: Themes.light.dark,
-		fontSize: 12,
-	},
-})

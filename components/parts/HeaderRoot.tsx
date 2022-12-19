@@ -1,27 +1,28 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Themes from '../../constants/Themes'
+import { useTheme } from 'styled-components/native'
+
+import Flex from '../styled/Flex.styled'
+import StyledText from '../styled/Text.styled'
 
 const HeaderRoot = () => {
+	const theme = useTheme()
 	return (
-		<View>
-			<Text style={styles.date}>24 дек. 2022</Text>
-			<Text style={styles.hello}>Привет, MicroSanya</Text>
-		</View>
+		<Flex flexDirection='column'>
+			<StyledText
+				fontSize={12}
+				color={theme.colors.dark}
+				style={{ marginBottom: 5 }}
+			>
+				24 дек. 2022
+			</StyledText>
+			<StyledText
+				fontSize={16}
+				fontWeight={700}
+				color={theme.colors.secondary}
+			>
+				Привет, MicroSanya
+			</StyledText>
+		</Flex>
 	)
 }
 
 export default HeaderRoot
-
-const styles = StyleSheet.create({
-	date: {
-		fontSize: 12,
-		color: Themes.light.dark,
-		marginBottom: 5,
-	},
-	hello: {
-		fontSize: 16,
-		fontWeight: '700',
-		color: Themes.light.secondary,
-	},
-})
