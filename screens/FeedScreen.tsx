@@ -38,6 +38,7 @@ const FeedScreen = () => {
 			{events.length ? (
 				<FlatList
 					contentContainerStyle={{
+						flex: 1,
 						padding: 15,
 						backgroundColor: theme.colors.background,
 					}}

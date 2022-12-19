@@ -40,7 +40,7 @@ const Room = ({ room, onPress }: RoomProps) => {
 						Room {room.title ? room.title : room.id}
 					</StyledText>
 					<StyledText color={theme.colors.dark} fontSize={12}>
-						{room.members.length} участников{' '}
+						{room.members?.length || 0} участников{' '}
 						<AntDesign
 							name='doubleright'
 							style={{ marginHorizontal: 10 }}
@@ -52,7 +52,7 @@ const Room = ({ room, onPress }: RoomProps) => {
 							style={{ marginHorizontal: 10 }}
 							size={10}
 						/>{' '}
-						{room.events.length} Событий
+						{room.events?.length || 0} Событий
 					</StyledText>
 				</Flex>
 				<AntDesign

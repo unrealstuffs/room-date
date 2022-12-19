@@ -2,7 +2,7 @@ type Themes = 'nature' | 'classic' | 'love'
 type Categories = 'friends' | 'couple'
 type EventTypes = 'date' | 'event' | 'note'
 
-export interface Rooms {
+export interface RoomTypes {
 	id: string
 	title: string
 	inviteCode: string
@@ -30,7 +30,7 @@ export interface Members {
 	roomIds: string[]
 }
 
-export const rooms: Rooms[] = [
+export const rooms: RoomTypes[] = [
 	{
 		id: '1',
 		title: 'JUGLANS NIGRA POLLEN',
@@ -156,83 +156,83 @@ export const events: Events[] = [
 		end_date: '1/16/2023',
 		pinned: false,
 	},
-	{
-		id: '4',
-		roomId: '4',
-		title: 'Geranium caespitosum James var. eremophilum (Wooton & Standl.) W.C. Martin & C.R. Hutchins',
-		description:
-			'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo.',
-		type: 'event',
-		start_date: '10/1/2022',
-		end_date: '9/24/2023',
-		pinned: true,
-	},
-	{
-		id: '5',
-		roomId: '5',
-		title: 'Cephalotaxus Siebold & Zucc. ex Endl.',
-		description:
-			'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.',
-		type: 'note',
-		start_date: '4/9/2022',
-		end_date: '7/15/2023',
-		pinned: false,
-	},
-	{
-		id: '6',
-		roomId: '6',
-		title: 'Gilia capitata Sims ssp. staminea (Greene) V.E. Grant',
-		description:
-			'Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl.',
-		type: 'note',
-		start_date: '10/18/2022',
-		end_date: '6/9/2023',
-		pinned: false,
-	},
-	{
-		id: '7',
-		roomId: '7',
-		title: 'Galenia pubescens (Eckl. & Zeyh.) Druce',
-		description:
-			'Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem.',
-		type: 'event',
-		start_date: '5/14/2022',
-		end_date: '7/13/2023',
-		pinned: true,
-	},
-	{
-		id: '8',
-		roomId: '8',
-		title: 'Amelanchier stolonifera Wiegand',
-		description:
-			'Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat. In congue. Etiam justo. Etiam pretium iaculis justo. In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum.',
-		type: 'date',
-		start_date: '10/29/2022',
-		end_date: '2/10/2023',
-		pinned: false,
-	},
-	{
-		id: '9',
-		roomId: '9',
-		title: 'Luetkea Bong.',
-		description:
-			'Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.',
-		type: 'date',
-		start_date: '4/8/2022',
-		end_date: '7/23/2023',
-		pinned: true,
-	},
-	{
-		id: '10',
-		roomId: '10',
-		title: 'Rosa nutkana C. Presl',
-		description:
-			'Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio.',
-		type: 'event',
-		start_date: '5/29/2022',
-		end_date: '12/12/2023',
-		pinned: false,
-	},
+	// {
+	// 	id: '4',
+	// 	roomId: '4',
+	// 	title: 'Geranium caespitosum James var. eremophilum (Wooton & Standl.) W.C. Martin & C.R. Hutchins',
+	// 	description:
+	// 		'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo.',
+	// 	type: 'event',
+	// 	start_date: '10/1/2022',
+	// 	end_date: '9/24/2023',
+	// 	pinned: true,
+	// },
+	// {
+	// 	id: '5',
+	// 	roomId: '5',
+	// 	title: 'Cephalotaxus Siebold & Zucc. ex Endl.',
+	// 	description:
+	// 		'Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.',
+	// 	type: 'note',
+	// 	start_date: '4/9/2022',
+	// 	end_date: '7/15/2023',
+	// 	pinned: false,
+	// },
+	// {
+	// 	id: '6',
+	// 	roomId: '6',
+	// 	title: 'Gilia capitata Sims ssp. staminea (Greene) V.E. Grant',
+	// 	description:
+	// 		'Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl.',
+	// 	type: 'note',
+	// 	start_date: '10/18/2022',
+	// 	end_date: '6/9/2023',
+	// 	pinned: false,
+	// },
+	// {
+	// 	id: '7',
+	// 	roomId: '7',
+	// 	title: 'Galenia pubescens (Eckl. & Zeyh.) Druce',
+	// 	description:
+	// 		'Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem.',
+	// 	type: 'event',
+	// 	start_date: '5/14/2022',
+	// 	end_date: '7/13/2023',
+	// 	pinned: true,
+	// },
+	// {
+	// 	id: '8',
+	// 	roomId: '8',
+	// 	title: 'Amelanchier stolonifera Wiegand',
+	// 	description:
+	// 		'Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat. In congue. Etiam justo. Etiam pretium iaculis justo. In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum.',
+	// 	type: 'date',
+	// 	start_date: '10/29/2022',
+	// 	end_date: '2/10/2023',
+	// 	pinned: false,
+	// },
+	// {
+	// 	id: '9',
+	// 	roomId: '9',
+	// 	title: 'Luetkea Bong.',
+	// 	description:
+	// 		'Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim.',
+	// 	type: 'date',
+	// 	start_date: '4/8/2022',
+	// 	end_date: '7/23/2023',
+	// 	pinned: true,
+	// },
+	// {
+	// 	id: '10',
+	// 	roomId: '10',
+	// 	title: 'Rosa nutkana C. Presl',
+	// 	description:
+	// 		'Nunc purus. Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio.',
+	// 	type: 'event',
+	// 	start_date: '5/29/2022',
+	// 	end_date: '12/12/2023',
+	// 	pinned: false,
+	// },
 ]
 
 export const members: Members[] = [

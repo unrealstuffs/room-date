@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { members, rooms, events } from '../../constants/Data'
 
 const initialState = {
-	rooms,
+	rooms: [],
 	members,
 	events,
 }
