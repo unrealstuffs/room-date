@@ -1,6 +1,8 @@
-import { Pressable, TouchableNativeFeedback, View } from 'react-native'
+import { useState } from 'react'
+import { TouchableNativeFeedback, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { useTheme } from 'styled-components/native'
+import firestore from '@react-native-firebase/firestore'
 
 import {
 	StyledAction,
@@ -13,7 +15,7 @@ import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import { Events } from '../../constants/Data'
 import sliceText from '../../utils/sliceText'
-import { useMemo, useState } from 'react'
+import DateConverter from '../../utils/dates'
 
 interface EventProps {
 	event: Events
@@ -22,10 +24,20 @@ interface EventProps {
 const Event = ({ event }: EventProps) => {
 	const theme = useTheme()
 	const [showFullText, setShowFullText] = useState(false)
-	const randomNubmer = useMemo(() => Math.floor(Math.random() * 100), [])
 
 	const handleShowFullText = () => {
 		setShowFullText(!showFullText)
+	}
+
+	const pinEvent = () => {
+		firestore()
+			.collection('events')
+			.doc(event.id)
+			.update({ pinned: !event.pinned })
+	}
+
+	const deleteEvent = () => {
+		firestore().collection('events').doc(event.id).delete()
 	}
 
 	return (
@@ -72,13 +84,7 @@ const Event = ({ event }: EventProps) => {
 								fontSize={12}
 								color={theme.colors.secondary}
 							>
-								{event.start_date}
-							</StyledText>
-							<StyledText
-								fontSize={12}
-								color={theme.colors.secondary}
-							>
-								{event.end_date}
+								{new DateConverter(event.date).getDate}
 							</StyledText>
 						</Flex>
 					)}
@@ -92,23 +98,24 @@ const Event = ({ event }: EventProps) => {
 								fontSize={12}
 								color={theme.colors.secondary}
 							>
-								{event.start_date}
+								{/* {dayjs(new Date()).format('DD/MM/YYYY')} */}
+								{new DateConverter(event.date).getDate}
 							</StyledText>
 							<StyledText
 								fontSize={12}
 								color={theme.colors.secondary}
-							>
-								{event.end_date}
-							</StyledText>
+							></StyledText>
 						</Flex>
 					)}
-					{event.type !== 'note' && (
+					{/* {event.type !== 'note' && event.type !== 'date' && (
 						<StyledProgressBar
 							backgroundColor={theme.colors.dark}
 							style={{ marginBottom: 10 }}
 						>
 							<StyledProgress
-								width={randomNubmer}
+								width={new DateConverter(
+									event.date
+								).getPercentage()}
 								backgroundColor={theme.colors.primary}
 							>
 								<StyledCircle
@@ -117,11 +124,15 @@ const Event = ({ event }: EventProps) => {
 								/>
 							</StyledProgress>
 						</StyledProgressBar>
-					)}
+					)} */}
 				</View>
 			</TouchableNativeFeedback>
 			<Flex justifyContent='space-between'>
-				<StyledAction border={true} borderColor={theme.colors.dark}>
+				<StyledAction
+					border={true}
+					borderColor={theme.colors.dark}
+					onPress={pinEvent}
+				>
 					<AntDesign
 						name='pushpino'
 						size={20}
@@ -141,7 +152,10 @@ const Event = ({ event }: EventProps) => {
 						style={{ textAlign: 'center' }}
 					/>
 				</StyledAction>
-				<StyledAction borderColor={theme.colors.dark}>
+				<StyledAction
+					borderColor={theme.colors.dark}
+					onPress={deleteEvent}
+				>
 					<AntDesign
 						name='delete'
 						size={20}

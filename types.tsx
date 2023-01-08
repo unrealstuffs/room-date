@@ -28,9 +28,9 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 	NativeStackScreenProps<RootStackParamList, Screen>
 
 export type RootTabParamList = {
-	Feed: { id: string }
-	Events: undefined
-	Settings: undefined
+	Feed: { id: string; title: string }
+	Events: { id: string; title: string }
+	Settings: { id: string; title: string }
 }
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

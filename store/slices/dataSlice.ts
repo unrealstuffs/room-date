@@ -1,16 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { members, rooms, events } from '../../constants/Data'
 
 const initialState = {
 	rooms: [],
-	members,
-	events,
+	members: [],
+	events: [],
 }
 
 const dataSlice = createSlice({
 	name: 'data',
 	initialState,
-	reducers: {},
+	reducers: {
+		setRooms(state, action) {
+			state.rooms = action.payload
+		},
+		setEvents(state, action) {
+			state.events = action.payload
+		},
+	},
 })
 
 export const dataReducer = dataSlice.reducer

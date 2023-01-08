@@ -13,7 +13,7 @@ const EventsActionsModal = () => {
 	const theme = useTheme()
 	const createEventBottomModal = useRef<BottomSheetModal>(null)
 
-	const snapPoints = useMemo(() => ['30', '70'], [])
+	const snapPoints = useMemo(() => ['30', '100'], [])
 
 	const handlePresentCreateEventForm = useCallback(() => {
 		createEventBottomModal.current?.present()

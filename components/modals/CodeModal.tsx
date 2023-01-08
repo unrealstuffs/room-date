@@ -1,20 +1,21 @@
-import { Pressable, useWindowDimensions } from 'react-native'
+import { useWindowDimensions } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ModalComponentProp } from 'react-native-modalfy'
 import { useTheme } from 'styled-components/native'
 
 import { ModalStackParams } from '../../providers/ModalConfigProvider'
-
 import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import StyledModal from '../styled/Modal.styled'
-import { StyledInput } from '../styled/Input.styled'
+import { StyledInput, StyledInputWithIcon } from '../styled/Input.styled'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 const CodeModal = ({
 	modal: { closeModal },
 }: ModalComponentProp<ModalStackParams, void, 'CodeModal'>) => {
 	const { width } = useWindowDimensions()
 	const theme = useTheme()
+	const { currentRoom } = useTypedSelector(state => state.currentRoom)
 
 	return (
 		<StyledModal
@@ -39,14 +40,22 @@ const CodeModal = ({
 					size={20}
 				/>
 			</Flex>
-			<Pressable onPress={() => {}}>
+			<StyledInputWithIcon>
 				<StyledInput
 					borderColor={theme.colors.light}
-					value='#27542286940'
-					color={theme.colors.secondary}
-					editable={false}
+					value={currentRoom.inviteCode}
 				/>
-			</Pressable>
+				<AntDesign
+					name='copy1'
+					size={20}
+					color={theme.colors.dark}
+					style={{
+						position: 'absolute',
+						right: 10,
+						top: 15,
+					}}
+				/>
+			</StyledInputWithIcon>
 		</StyledModal>
 	)
 }

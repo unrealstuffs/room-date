@@ -5,7 +5,6 @@ import { ModalComponentProp } from 'react-native-modalfy'
 
 import { ModalStackParams } from '../../providers/ModalConfigProvider'
 import allThemes from '../../themes'
-
 import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import StyledModal from '../styled/Modal.styled'

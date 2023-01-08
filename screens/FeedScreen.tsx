@@ -1,12 +1,13 @@
 import { useTheme } from 'styled-components/native'
 import { FlatList } from 'react-native'
-import Event from '../components/parts/Event'
 
+import Event from '../components/parts/Event'
 import HeaderRoom from '../components/parts/HeaderRoom'
 import Centered from '../components/styled/Centered.styled'
 import Container from '../components/styled/Container.styled'
 import StyledText from '../components/styled/Text.styled'
-import { Events, events } from '../constants/Data'
+import { Events } from '../constants/Data'
+import { useTypedSelector } from '../hooks/useTypedSelector'
 
 interface RenderItemProps {
 	item: Events
@@ -14,9 +15,7 @@ interface RenderItemProps {
 
 const FeedScreen = () => {
 	const theme = useTheme()
-
-	const renderItem = ({ item }: RenderItemProps) =>
-		item.pinned ? <Event event={item} /> : null
+	const { events } = useTypedSelector(state => state.data)
 
 	return (
 		<>
@@ -43,7 +42,9 @@ const FeedScreen = () => {
 						backgroundColor: theme.colors.background,
 					}}
 					data={events}
-					renderItem={renderItem}
+					renderItem={({ item }: RenderItemProps) =>
+						item.pinned ? <Event event={item} /> : null
+					}
 					keyExtractor={event => event.id}
 				/>
 			) : (

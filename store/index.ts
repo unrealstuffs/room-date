@@ -1,14 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { currentRoomReducer } from './slices/currentRoomSlice'
 import { dataReducer } from './slices/dataSlice'
-import { roomReducer } from './slices/roomSlice'
 import { themeReducer } from './slices/themeSlice'
 import { userReducer } from './slices/userSlice'
 
 const rootReducer = combineReducers({
 	data: dataReducer,
-	rooms: roomReducer,
 	user: userReducer,
 	theme: themeReducer,
+	currentRoom: currentRoomReducer,
 })
 
 export const store = configureStore({

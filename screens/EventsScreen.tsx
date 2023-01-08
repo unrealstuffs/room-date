@@ -7,7 +7,8 @@ import HeaderRoom from '../components/parts/HeaderRoom'
 import Centered from '../components/styled/Centered.styled'
 import Container from '../components/styled/Container.styled'
 import StyledText from '../components/styled/Text.styled'
-import { Events, events } from '../constants/Data'
+import { Events } from '../constants/Data'
+import { useTypedSelector } from '../hooks/useTypedSelector'
 
 interface RenderItemProps {
 	item: Events
@@ -15,8 +16,7 @@ interface RenderItemProps {
 
 const EventsScreen = () => {
 	const theme = useTheme()
-
-	const renderItem = ({ item }: RenderItemProps) => <Event event={item} />
+	const { events } = useTypedSelector(state => state.data)
 
 	return (
 		<>
@@ -42,7 +42,9 @@ const EventsScreen = () => {
 						backgroundColor: theme.colors.background,
 					}}
 					data={events}
-					renderItem={renderItem}
+					renderItem={({ item }: RenderItemProps) => (
+						<Event event={item} />
+					)}
 					keyExtractor={event => event.id}
 				/>
 			) : (

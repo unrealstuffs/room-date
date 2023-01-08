@@ -1,13 +1,14 @@
-import { TouchableNativeFeedback } from 'react-native'
+import { TouchableNativeFeedback, ActivityIndicator } from 'react-native'
 import styled, { useTheme } from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons'
 
 import StyledText from '../styled/Text.styled'
 import Flex from '../styled/Flex.styled'
-import { Rooms } from '../../constants/Data'
+import { RoomTypes } from '../../constants/Data'
 
 interface RoomProps {
-	room: Rooms
+	room: RoomTypes
+	loading: boolean
 	onPress: () => void
 }
 
@@ -21,7 +22,7 @@ const StyledCard = styled.View<{ backgroundColor: string }>`
 	background-color: ${props => props.backgroundColor};
 `
 
-const Room = ({ room, onPress }: RoomProps) => {
+const Room = ({ room, loading, onPress }: RoomProps) => {
 	const theme = useTheme()
 
 	return (
@@ -37,7 +38,7 @@ const Room = ({ room, onPress }: RoomProps) => {
 						color={theme.colors.secondary}
 						style={{ marginBottom: 5 }}
 					>
-						Room {room.title ? room.title : room.id}
+						{room.title ? room.title : room.id}
 					</StyledText>
 					<StyledText color={theme.colors.dark} fontSize={12}>
 						{room.members?.length || 0} участников{' '}
@@ -55,11 +56,15 @@ const Room = ({ room, onPress }: RoomProps) => {
 						{room.events?.length || 0} Событий
 					</StyledText>
 				</Flex>
-				<AntDesign
-					name='arrowright'
-					color={theme.colors.primary}
-					size={20}
-				/>
+				{loading ? (
+					<ActivityIndicator color={theme.colors.white} />
+				) : (
+					<AntDesign
+						name='arrowright'
+						color={theme.colors.primary}
+						size={20}
+					/>
+				)}
 			</StyledCard>
 		</TouchableNativeFeedback>
 	)

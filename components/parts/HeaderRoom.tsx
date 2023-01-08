@@ -1,16 +1,16 @@
-import { View } from 'react-native'
+import { useEffect } from 'react'
 import { useModal } from 'react-native-modalfy'
 
-import Avatar from './Avatar'
-
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 import Flex from '../styled/Flex.styled'
-import { members } from '../../constants/Data'
 
 const HeaderRoom = () => {
 	const { openModal } = useModal()
+	const { rooms } = useTypedSelector(state => state.data)
+
 	return (
 		<Flex style={{ marginBottom: 20 }}>
-			{members.map(member => (
+			{/* {members.map(member => (
 				<View key={member.id} style={{ marginRight: 10 }}>
 					<Avatar
 						size={40}
@@ -23,7 +23,7 @@ const HeaderRoom = () => {
 						}
 					/>
 				</View>
-			))}
+			))} */}
 		</Flex>
 	)
 }

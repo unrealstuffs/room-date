@@ -69,12 +69,12 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
 	const { openModal } = useModal()
 	const theme = useTheme()
+	const { currentRoom } = useTypedSelector(state => state.currentRoom)
 	return (
 		<BottomTab.Navigator
 			initialRouteName='Feed'
 			screenOptions={{
 				tabBarActiveTintColor: theme.colors.primary,
-				headerTitle: '#133769420',
 				headerTitleAlign: 'center',
 				headerShadowVisible: false,
 				headerStyle: { backgroundColor: theme.colors.background },
@@ -86,6 +86,7 @@ function BottomTabNavigator() {
 				component={FeedScreen}
 				options={({ navigation }: RootTabScreenProps<'Feed'>) => ({
 					title: 'Лента',
+					headerTitle: currentRoom.title,
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='home' color={color} />
 					),
@@ -126,6 +127,7 @@ function BottomTabNavigator() {
 				component={EventsScreen}
 				options={({ navigation }: RootTabScreenProps<'Events'>) => ({
 					title: 'События',
+					headerTitle: currentRoom.title,
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='calendar' color={color} />
 					),
@@ -166,6 +168,7 @@ function BottomTabNavigator() {
 				component={SettingsScreen}
 				options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
 					title: 'Настройки',
+					headerTitle: currentRoom.title,
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='setting' color={color} />
 					),
