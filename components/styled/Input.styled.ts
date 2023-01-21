@@ -17,5 +17,5 @@ export const StyledInput = styled.TextInput<InputProps>`
 	padding: 10px;
 	border-radius: 8px;
 	border-color: ${props => props.borderColor};
-	color: ${props => props.color || '#000'};
+	color: ${props => props.color || '#ececec'};
 `

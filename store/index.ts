@@ -1,14 +1,16 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { currentRoomReducer } from './slices/currentRoomSlice'
-import { dataReducer } from './slices/dataSlice'
-import { themeReducer } from './slices/themeSlice'
+import { sheetReducer } from './slices/sheetSlice'
+import { groupReducer } from './slices/groupSlice'
 import { userReducer } from './slices/userSlice'
+import { noteReducer } from './slices/noteSlice'
+import { qrReducer } from './slices/qrSlice'
 
 const rootReducer = combineReducers({
-	data: dataReducer,
 	user: userReducer,
-	theme: themeReducer,
-	currentRoom: currentRoomReducer,
+	group: groupReducer,
+	sheet: sheetReducer,
+	note: noteReducer,
+	qr: qrReducer,
 })
 
 export const store = configureStore({

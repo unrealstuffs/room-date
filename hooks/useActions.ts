@@ -1,15 +1,17 @@
 import { bindActionCreators } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import { currentRoomActions } from '../store/slices/currentRoomSlice'
-import { dataActions } from '../store/slices/dataSlice'
-import { themeActions } from '../store/slices/themeSlice'
+import { sheetActions } from '../store/slices/sheetSlice'
+import { groupActions } from '../store/slices/groupSlice'
 import { userActions } from '../store/slices/userSlice'
+import { noteActions } from '../store/slices/noteSlice'
+import { qrActions } from '../store/slices/qrSlice'
 
 const allActions = {
-	...dataActions,
 	...userActions,
-	...themeActions,
-	...currentRoomActions,
+	...groupActions,
+	...sheetActions,
+	...noteActions,
+	...qrActions,
 }
 
 export const useActions = () => {

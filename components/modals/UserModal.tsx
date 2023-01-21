@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useWindowDimensions, ActivityIndicator } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ModalComponentProp } from 'react-native-modalfy'
-import { useTheme } from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 
 import { ModalStackParams } from '../../providers/ModalConfigProvider'
@@ -14,6 +13,7 @@ import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import { StyledButton } from '../styled/Button.styled'
 import StyledModal from '../styled/Modal.styled'
+import { useTheme } from '../../hooks/useTheme'
 
 const UserModal = ({
 	modal: { closeModal },
@@ -38,7 +38,7 @@ const UserModal = ({
 
 	return (
 		<StyledModal
-			backgroundColor={theme.colors.white}
+			backgroundColor={theme.colors.secondary}
 			style={{ width: width * 0.85 }}
 		>
 			<Flex justifyContent='space-between' style={{ marginBottom: 20 }}>
@@ -47,7 +47,7 @@ const UserModal = ({
 					<StyledText
 						fontSize={14}
 						style={{ marginLeft: 10 }}
-						color={theme.colors.secondary}
+						color={theme.colors.light}
 					>
 						{user ? user.displayName : 'Не доступно'}
 					</StyledText>
@@ -56,6 +56,7 @@ const UserModal = ({
 					onPress={() => closeModal()}
 					name='close'
 					size={20}
+					color={theme.colors.light}
 				/>
 			</Flex>
 			<StyledButton
@@ -65,9 +66,9 @@ const UserModal = ({
 				onPress={googleSignOut}
 				backgroundColor={theme.colors.primary}
 			>
-				<StyledText color={theme.colors.white}>
+				<StyledText color={theme.colors.light}>
 					{loading ? (
-						<ActivityIndicator color={theme.colors.white} />
+						<ActivityIndicator color={theme.colors.light} />
 					) : (
 						'Выйти из аккаунта'
 					)}

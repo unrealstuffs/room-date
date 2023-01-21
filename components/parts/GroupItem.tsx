@@ -1,13 +1,14 @@
 import { TouchableNativeFeedback, ActivityIndicator } from 'react-native'
-import styled, { useTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons'
 
 import StyledText from '../styled/Text.styled'
 import Flex from '../styled/Flex.styled'
-import { RoomTypes } from '../../constants/Data'
+import { Group } from '../../constants/Types'
+import themes from '../../themes'
 
-interface RoomProps {
-	room: RoomTypes
+interface GroupProps {
+	group: Group
 	loading: boolean
 	onPress: () => void
 }
@@ -22,46 +23,37 @@ const StyledCard = styled.View<{ backgroundColor: string }>`
 	background-color: ${props => props.backgroundColor};
 `
 
-const Room = ({ room, loading, onPress }: RoomProps) => {
-	const theme = useTheme()
-
+const GroupItem = ({ group, loading, onPress }: GroupProps) => {
 	return (
 		<TouchableNativeFeedback onPress={onPress}>
 			<StyledCard
 				style={{ elevation: 4 }}
-				backgroundColor={theme.colors.white}
+				backgroundColor={themes.classic.colors.secondary}
 			>
 				<Flex flexDirection='column'>
 					<StyledText
 						fontSize={14}
 						fontWeight={700}
-						color={theme.colors.secondary}
+						color={themes.classic.colors.light}
 						style={{ marginBottom: 5 }}
 					>
-						{room.title ? room.title : room.id}
+						{group.title ? group.title : group.id}
 					</StyledText>
-					<StyledText color={theme.colors.dark} fontSize={12}>
-						{room.members?.length || 0} участников{' '}
-						<AntDesign
-							name='doubleright'
-							style={{ marginHorizontal: 10 }}
-							size={10}
-						/>{' '}
-						{room.category}{' '}
-						<AntDesign
-							name='doubleright'
-							style={{ marginHorizontal: 10 }}
-							size={10}
-						/>{' '}
-						{room.events?.length || 0} Событий
+					<StyledText
+						color={themes.classic.colors.dark}
+						fontSize={12}
+					>
+						{group.members?.length || 0} участников{' '}
 					</StyledText>
 				</Flex>
 				{loading ? (
-					<ActivityIndicator color={theme.colors.white} />
+					<ActivityIndicator
+						color={themes[group.theme].colors.light}
+					/>
 				) : (
 					<AntDesign
 						name='arrowright'
-						color={theme.colors.primary}
+						color={themes[group.theme].colors.primary}
 						size={20}
 					/>
 				)}
@@ -70,4 +62,4 @@ const Room = ({ room, loading, onPress }: RoomProps) => {
 	)
 }
 
-export default Room
+export default GroupItem

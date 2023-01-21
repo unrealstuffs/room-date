@@ -1,55 +1,55 @@
 {
-  "project_info": {
-    "project_number": "378579817561",
-    "project_id": "room-date-2c0f6",
-    "storage_bucket": "room-date-2c0f6.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:378579817561:android:bc2abda8355b61b5840d48",
-        "android_client_info": {
-          "package_name": "com.sasha228.roomdate"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "378579817561-k7eq994r3qq1b8u6p7vojd0uq46e93g7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sasha228.roomdate",
-            "certificate_hash": "8d2dc0ba7fac0ed0b4dc28f224a372355539e9bc"
-          }
-        },
-        {
-          "client_id": "378579817561-lcmb4rroctehn6822rvan33tkjbvpbpn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sasha228.roomdate",
-            "certificate_hash": "8b276dfa57a470fce9775265ca66b96eb4d05c7e"
-          }
-        },
-        {
-          "client_id": "378579817561-eedl9qq12q5ntfn91b5258pnv480neah.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEZAE-6KYJdVaz1QcF3YpOki9Dm-hL9k"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "378579817561-eedl9qq12q5ntfn91b5258pnv480neah.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+	"project_info": {
+		"project_number": "322609659802",
+		"project_id": "note-in-groups",
+		"storage_bucket": "note-in-groups.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:322609659802:android:666fb084f7cf622ee50423",
+				"android_client_info": {
+					"package_name": "com.micros.noteingroups"
+				}
+			},
+			"oauth_client": [
+				{
+					"client_id": "322609659802-5uptbtcj6o18oq4d30vltcfl64knqb3k.apps.googleusercontent.com",
+					"client_type": 1,
+					"android_info": {
+						"package_name": "com.micros.noteingroups",
+						"certificate_hash": "9d8ceaf3330e692ac0367482b88cf87de19d4c3b"
+					}
+				},
+				{
+					"client_id": "322609659802-g3vbp7463od3jb0s4anapeo02ouoiat4.apps.googleusercontent.com",
+					"client_type": 1,
+					"android_info": {
+						"package_name": "com.micros.noteingroups",
+						"certificate_hash": "091217d3fe5ef4f28c96eb6abffacef3f27c333d"
+					}
+				},
+				{
+					"client_id": "322609659802-88fcb778q393qpu6hfff0esj8i435nqr.apps.googleusercontent.com",
+					"client_type": 3
+				}
+			],
+			"api_key": [
+				{
+					"current_key": "AIzaSyBo0SeKTZxf-IbEuGrkxTE_VwOrk6LbBew"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": [
+						{
+							"client_id": "322609659802-88fcb778q393qpu6hfff0esj8i435nqr.apps.googleusercontent.com",
+							"client_type": 3
+						}
+					]
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
 }

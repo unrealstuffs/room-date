@@ -9,7 +9,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
 	GoogleSignin.configure({
 		webClientId:
-			'378579817561-eedl9qq12q5ntfn91b5258pnv480neah.apps.googleusercontent.com',
+			'322609659802-88fcb778q393qpu6hfff0esj8i435nqr.apps.googleusercontent.com',
 	})
 
 	function onAuthStateChanged(user: any) {

@@ -1,22 +1,19 @@
-import { useEffect, useState } from 'react'
-import { AntDesign } from '@expo/vector-icons'
-import { useTheme } from 'styled-components/native'
+import { useState } from 'react'
 import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 import {
 	GoogleSignin,
 	GoogleSigninButton,
 } from '@react-native-google-signin/google-signin'
 
-import { RootStackScreenProps } from '../types'
 import Container from '../components/styled/Container.styled'
-import { useTypedSelector } from '../hooks/useTypedSelector'
 import Centered from '../components/styled/Centered.styled'
 import StyledText from '../components/styled/Text.styled'
+import { Image } from 'react-native'
+import themes from '../themes'
 
-const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
-	const { user } = useTypedSelector(state => state.user)
+const LoginScreen = () => {
 	const [loading, setLoading] = useState(false)
-	const theme = useTheme()
 
 	async function onGoogleButtonPress() {
 		await GoogleSignin.hasPlayServices({
@@ -29,25 +26,27 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
 		return auth().signInWithCredential(googleCredential)
 	}
 
-	useEffect(() => {
-		user && navigation.navigate('Root')
-	}, [user])
-
 	return (
-		<Container fullHeight={true} backgroundColor={theme.colors.background}>
+		<Container
+			fullHeight={true}
+			backgroundColor={themes.classic.colors.background}
+		>
 			<Centered>
-				<AntDesign name='appstore-o' size={60} />
+				<Image
+					source={require('../assets/images/logo.png')}
+					style={{ width: 70, height: 70, marginBottom: 30 }}
+				/>
 				<StyledText
-					fontSize={18}
-					color={theme.colors.secondary}
+					fontSize={16}
+					color={themes.classic.colors.light}
 					style={{
-						marginTop: 10,
 						marginBottom: 60,
 						textAlign: 'center',
 					}}
 				>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
-					ullam nisi animi? Exercitationem, quisquam animi?
+					Добро пожаловать в Note in Groups! Начните создавать
+					групповые заметки с друзьями, коллегами или партнерами прямо
+					сейчас!
 				</StyledText>
 				<GoogleSigninButton
 					color={GoogleSigninButton.Color.Dark}
@@ -57,7 +56,17 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
 					onPress={() => {
 						setLoading(true)
 						onGoogleButtonPress()
-							.then(() => setLoading(false))
+							.then(({ user }) => {
+								setLoading(false)
+
+								firestore()
+									.collection('users')
+									.doc(user.uid)
+									.set({
+										displayName: user.displayName,
+										photoURL: user.photoURL,
+									})
+							})
 							.catch(err => console.log(err))
 					}}
 				></GoogleSigninButton>

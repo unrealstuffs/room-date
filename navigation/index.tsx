@@ -4,62 +4,73 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Pressable } from 'react-native'
 import { useModal } from 'react-native-modalfy'
 
-import NotFoundScreen from '../screens/NotFoundScreen'
 import {
 	RootStackParamList,
 	RootTabParamList,
 	RootTabScreenProps,
-} from '../types'
+} from './types'
 import LoginScreen from '../screens/LoginScreen'
 import FeedScreen from '../screens/FeedScreen'
-import EventsScreen from '../screens/EventsScreen'
+import NotesScreen from '../screens/NotesScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import RootScreen from '../screens/RootScreen'
 import Avatar from '../components/parts/Avatar'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import HeaderRoot from '../components/parts/HeaderRoot'
-import { useTheme } from 'styled-components/native'
+import { useTheme } from '../hooks/useTheme'
+import themes from '../themes'
+import { useGroup } from '../hooks/useGroup'
+import ScannerScreen from '../screens/ScannerScreen'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default function RootNavigator() {
 	const { user } = useTypedSelector(state => state.user)
 	const { openModal } = useModal()
-	const theme = useTheme()
 
 	return (
 		<Stack.Navigator initialRouteName='Root'>
-			<Stack.Screen
-				name='Login'
-				component={LoginScreen}
-				options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name='Root'
-				component={RootScreen}
-				options={() => ({
-					headerTitle: () => <HeaderRoot />,
-					headerRight: () => (
-						<Avatar
-							size={30}
-							uri={user?.photoURL}
-							onPress={() => openModal('UserModal')}
-						/>
-					),
-					headerShadowVisible: false,
-					headerStyle: { backgroundColor: theme.colors.background },
-				})}
-			/>
-			<Stack.Screen
-				name='Room'
-				component={BottomTabNavigator}
-				options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name='NotFound'
-				component={NotFoundScreen}
-				options={{ title: 'Oops!' }}
-			/>
+			{!user ? (
+				<>
+					<Stack.Screen
+						name='Login'
+						component={LoginScreen}
+						options={{ headerShown: false }}
+					/>
+				</>
+			) : (
+				<>
+					<Stack.Screen
+						name='Root'
+						component={RootScreen}
+						options={() => ({
+							headerTitle: () => <HeaderRoot />,
+							headerRight: () => (
+								<Avatar
+									size={30}
+									uri={user?.photoURL}
+									onPress={() => openModal('UserModal')}
+								/>
+							),
+							headerShadowVisible: false,
+							headerStyle: {
+								backgroundColor:
+									themes.classic.colors.background,
+							},
+						})}
+					/>
+					<Stack.Screen
+						name='Group'
+						component={BottomTabNavigator}
+						options={{ headerShown: false }}
+					/>
+					<Stack.Screen
+						name='Scanner'
+						component={ScannerScreen}
+						options={{ headerShown: false }}
+					/>
+				</>
+			)}
 		</Stack.Navigator>
 	)
 }
@@ -69,7 +80,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
 	const { openModal } = useModal()
 	const theme = useTheme()
-	const { currentRoom } = useTypedSelector(state => state.currentRoom)
+	const { group } = useGroup()
+
 	return (
 		<BottomTab.Navigator
 			initialRouteName='Feed'
@@ -78,7 +90,12 @@ function BottomTabNavigator() {
 				headerTitleAlign: 'center',
 				headerShadowVisible: false,
 				headerStyle: { backgroundColor: theme.colors.background },
-				tabBarStyle: { backgroundColor: theme.colors.background },
+				tabBarStyle: {
+					backgroundColor: theme.colors.background,
+					borderTopWidth: 0,
+				},
+				headerTitleStyle: { color: theme.colors.light },
+				headerTitle: group.title || 'Загрузка...',
 			}}
 		>
 			<BottomTab.Screen
@@ -86,13 +103,15 @@ function BottomTabNavigator() {
 				component={FeedScreen}
 				options={({ navigation }: RootTabScreenProps<'Feed'>) => ({
 					title: 'Лента',
-					headerTitle: currentRoom.title,
+
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='home' color={color} />
 					),
 					headerLeft: () => (
 						<Pressable
-							onPress={() => navigation.navigate('Root')}
+							onPress={() => {
+								navigation.navigate('Root')
+							}}
 							style={({ pressed }) => ({
 								opacity: pressed ? 0.5 : 1,
 							})}
@@ -100,7 +119,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='arrowleft'
 								size={25}
-								color={theme.colors.secondary}
+								color={theme.colors.light}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -115,7 +134,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='qrcode'
 								size={25}
-								color={theme.colors.secondary}
+								color={theme.colors.light}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -123,17 +142,18 @@ function BottomTabNavigator() {
 				})}
 			/>
 			<BottomTab.Screen
-				name='Events'
-				component={EventsScreen}
-				options={({ navigation }: RootTabScreenProps<'Events'>) => ({
-					title: 'События',
-					headerTitle: currentRoom.title,
+				name='Notes'
+				component={NotesScreen}
+				options={({ navigation }: RootTabScreenProps<'Notes'>) => ({
+					title: 'Заметки',
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='calendar' color={color} />
 					),
 					headerLeft: () => (
 						<Pressable
-							onPress={() => navigation.navigate('Root')}
+							onPress={() => {
+								navigation.navigate('Root')
+							}}
 							style={({ pressed }) => ({
 								opacity: pressed ? 0.5 : 1,
 							})}
@@ -141,7 +161,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='arrowleft'
 								size={25}
-								color={theme.colors.secondary}
+								color={theme.colors.light}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -156,7 +176,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='qrcode'
 								size={25}
-								color={theme.colors.secondary}
+								color={theme.colors.light}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -168,13 +188,14 @@ function BottomTabNavigator() {
 				component={SettingsScreen}
 				options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
 					title: 'Настройки',
-					headerTitle: currentRoom.title,
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon name='setting' color={color} />
 					),
 					headerLeft: () => (
 						<Pressable
-							onPress={() => navigation.navigate('Root')}
+							onPress={() => {
+								navigation.navigate('Root')
+							}}
 							style={({ pressed }) => ({
 								opacity: pressed ? 0.5 : 1,
 							})}
@@ -182,7 +203,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='arrowleft'
 								size={25}
-								color={theme.colors.secondary}
+								color={theme.colors.light}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>
@@ -197,7 +218,7 @@ function BottomTabNavigator() {
 							<AntDesign
 								name='qrcode'
 								size={25}
-								color={theme.colors.secondary}
+								color={theme.colors.light}
 								style={{ marginHorizontal: 15 }}
 							/>
 						</Pressable>

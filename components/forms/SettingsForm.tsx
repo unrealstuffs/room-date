@@ -1,112 +1,44 @@
-import { useState } from 'react'
-import { Pressable, View } from 'react-native'
-import { useModal } from 'react-native-modalfy'
-import { useTheme } from 'styled-components/native'
-import { AntDesign } from '@expo/vector-icons'
-import firestore from '@react-native-firebase/firestore'
 import * as Yup from 'yup'
-import { useNavigation } from '@react-navigation/native'
 import { Formik } from 'formik'
-import { Picker } from '@react-native-picker/picker'
 
-import { StyledInput, StyledInputWithIcon } from '../styled/Input.styled'
+import { StyledInput } from '../styled/Input.styled'
 import { StyledButton } from '../styled/Button.styled'
 import StyledText from '../styled/Text.styled'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { useTheme } from '../../hooks/useTheme'
+import InviteInput from '../parts/InviteInput'
+import { useGroupsActions } from '../../hooks/useGroupsActions'
+import { useGroup } from '../../hooks/useGroup'
+import ThemeInput from '../parts/ThemeInput'
 
-interface FormFields {
-	title: string
-	category: string
-	theme: string
-}
-
-const categories = [
-	{ id: 1, title: 'Друзья', value: 'friends' },
-	{ id: 2, title: 'Пара', value: 'couple' },
-]
-
-const UpdateRoomSchema = Yup.object().shape({
+const UpdateGroupSchema = Yup.object().shape({
 	title: Yup.string().required('Название не указано'),
 })
 
 const Settings = () => {
-	const navigation = useNavigation()
-	const { openModal } = useModal()
 	const theme = useTheme()
-	const { currentRoom } = useTypedSelector(state => state.currentRoom)
+	const { group } = useGroup()
 	const { user } = useTypedSelector(state => state.user)
-	const [serverError, setServerError] = useState(false)
-	const [loading, setLoading] = useState(false)
+	const { exitGroup, updateGroup, deleteGroup, status } = useGroupsActions()
 
-	const handleUpdateRoom = ({ category, title, theme }: FormFields) => {
-		setLoading(true)
-		firestore()
-			.collection('rooms')
-			.doc(currentRoom.id)
-			.update({
-				title,
-				category: categories.find(item => item.value === category)
-					?.title,
-				theme,
-			})
-			.then(() => {
-				setLoading(false)
-			})
-			.catch(() => {
-				setServerError(true)
-				setTimeout(() => {
-					setServerError(false)
-				}, 5000)
-			})
-	}
-
-	const exitRoom = () => {
-		if (currentRoom.members.length > 1) {
-			firestore()
-				.collection('rooms')
-				.doc(currentRoom.id)
-				.update({
-					members: firestore.FieldValue.arrayRemove(user?.uid),
-				})
-				.then(() => {
-					navigation.navigate('Root')
-				})
-				.catch(() => {
-					setServerError(true)
-					setTimeout(() => {
-						setServerError(false)
-					}, 5000)
-				})
+	const handleExitGroup = () => {
+		if (group.members.length > 1) {
+			exitGroup(user.uid)
 		} else {
-			deleteRoom()
+			deleteGroup()
 		}
-	}
-
-	const deleteRoom = () => {
-		firestore()
-			.collection('rooms')
-			.doc(currentRoom.id)
-			.delete()
-			.then(() => {
-				navigation.navigate('Root')
-			})
-			.catch(() => {
-				setServerError(true)
-				setTimeout(() => {
-					setServerError(false)
-				}, 5000)
-			})
 	}
 
 	return (
 		<Formik
 			initialValues={{
-				title: currentRoom.title,
-				category: currentRoom.category,
-				theme: currentRoom.theme,
+				title: group.title,
 			}}
-			validationSchema={UpdateRoomSchema}
-			onSubmit={values => handleUpdateRoom(values)}
+			enableReinitialize
+			validationSchema={UpdateGroupSchema}
+			onSubmit={values => {
+				updateGroup(values)
+			}}
 		>
 			{({
 				handleChange,
@@ -119,124 +51,60 @@ const Settings = () => {
 				<>
 					<StyledInput
 						borderColor={
-							errors.title
+							errors.title && touched.title
 								? theme.colors.danger
-								: theme.colors.light
+								: theme.colors.dark
 						}
 						placeholder='Название...'
 						style={{ marginBottom: 10 }}
-						color={theme.colors.secondary}
+						color={theme.colors.light}
 						onChangeText={handleChange('title')}
 						onBlur={handleBlur('title')}
 						value={values.title}
+						placeholderTextColor={theme.colors.dark}
 					/>
-					<View
-						style={{
-							marginBottom: 10,
-						}}
-					>
-						<Picker
-							enabled={true}
-							placeholder='Категория...'
-							onValueChange={handleChange('category')}
-							selectedValue={values.category}
-							dropdownIconColor={theme.colors.dark}
-							style={{
-								marginHorizontal: -5,
-							}}
-						>
-							{categories.map(item => (
-								<Picker.Item
-									label={item.title}
-									value={item.value}
-									key={item.id}
-									style={{
-										fontSize: 14,
-										color: theme.colors.secondary,
-									}}
-								/>
-							))}
-						</Picker>
-					</View>
-					<Pressable onPress={() => openModal('ThemeSwitcherModal')}>
-						<StyledInputWithIcon>
-							<StyledInput
-								borderColor={theme.colors.light}
-								placeholder='Тема'
-								style={{ marginBottom: 10 }}
-								color={theme.colors.secondary}
-								editable={false}
-								onChangeText={handleChange('theme')}
-								onBlur={handleBlur('theme')}
-								value={values.theme}
-							/>
 
-							<View
-								style={{
-									position: 'absolute',
-									right: 10,
-									top: 15,
-									width: 20,
-									height: 20,
-									backgroundColor: theme.colors.primary,
-									borderRadius: 999,
-								}}
-							/>
-						</StyledInputWithIcon>
-					</Pressable>
+					<ThemeInput themeName={group.theme} />
 
-					<StyledInputWithIcon>
-						<StyledInput
-							borderColor={theme.colors.light}
-							value={currentRoom.inviteCode}
-							color={theme.colors.secondary}
-							style={{ marginBottom: 30 }}
-							editable={false}
-						/>
-						<AntDesign
-							name='copy1'
-							size={20}
-							color={theme.colors.dark}
-							style={{
-								position: 'absolute',
-								right: 10,
-								top: 15,
-							}}
-						/>
-					</StyledInputWithIcon>
+					<InviteInput
+						inviteCode={group.inviteCode}
+						style={{ marginBottom: 30 }}
+					/>
 
 					<StyledButton
 						backgroundColor={theme.colors.primary}
-						style={{ marginBottom: 10, opacity: loading ? 0.6 : 1 }}
+						style={{
+							marginBottom: 10,
+							opacity: status === 'loading' ? 0.6 : 1,
+						}}
 						onPress={() => handleSubmit()}
-						disabled={loading}
+						disabled={status === 'loading'}
 					>
 						<StyledText>Сохранить</StyledText>
 					</StyledButton>
 					<StyledButton
-						backgroundColor={theme.colors.secondary}
-						style={{ marginBottom: 10, opacity: loading ? 0.6 : 1 }}
-						onPress={exitRoom}
+						backgroundColor={theme.colors.dark}
+						style={{
+							marginBottom: 10,
+							opacity: status === 'loading' ? 0.6 : 1,
+						}}
+						onPress={() => handleExitGroup()}
+						disabled={status === 'loading'}
 					>
-						<StyledText>Выйти из комнаты</StyledText>
+						<StyledText>Выйти из группы</StyledText>
 					</StyledButton>
 					<StyledButton
 						backgroundColor={theme.colors.danger}
-						style={{ marginBottom: 30, opacity: loading ? 0.6 : 1 }}
-						onPress={deleteRoom}
+						style={{
+							marginBottom: 30,
+							opacity: status === 'loading' ? 0.6 : 1,
+						}}
+						onPress={() => deleteGroup()}
+						disabled={status === 'loading'}
 					>
-						<StyledText>Удалить комнату</StyledText>
+						<StyledText>Удалить группу</StyledText>
 					</StyledButton>
-
-					{errors.title && touched.title && (
-						<StyledText
-							color={theme.colors.danger}
-							style={{ textAlign: 'center' }}
-						>
-							{errors.title}
-						</StyledText>
-					)}
-					{serverError && (
+					{status === 'error' && (
 						<StyledText
 							color={theme.colors.danger}
 							style={{ textAlign: 'center' }}

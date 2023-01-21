@@ -1,123 +1,112 @@
-import { useEffect, useState } from 'react'
-import { FlatList } from 'react-native'
-import { useTheme } from 'styled-components/native'
-import firestore from '@react-native-firebase/firestore'
-import dayjs from 'dayjs'
-import 'dayjs/locale/ru'
+import { FlatList, View } from 'react-native'
+import { useCallback } from 'react'
+import { AntDesign } from '@expo/vector-icons'
 
-import RootActionsModal from '../components/modals/RootActionsModal'
-import Room from '../components/parts/Room'
+import GroupItem from '../components/parts/GroupItem'
 import Centered from '../components/styled/Centered.styled'
 import Container from '../components/styled/Container.styled'
 import StyledText from '../components/styled/Text.styled'
-import { RoomTypes } from '../constants/Data'
-import { useTypedSelector } from '../hooks/useTypedSelector'
-import { RootStackScreenProps } from '../types'
+import { RootStackScreenProps } from '../navigation/types'
+import { useGroups } from '../hooks/useGroups'
+import { Group } from '../constants/Types'
 import { useActions } from '../hooks/useActions'
-
-interface RenderItemProps {
-	item: RoomTypes
-}
-
-dayjs.locale('ru')
+import {
+	StyledAction,
+	StyledActions,
+} from '../components/styled/Actions.styled'
+import { useFocusEffect } from '@react-navigation/native'
+import themes from '../themes'
+import { useTypedSelector } from '../hooks/useTypedSelector'
 
 const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
-	const theme = useTheme()
-	const { user } = useTypedSelector(state => state.user)
-	const { rooms } = useTypedSelector(state => state.data)
-	const { setRooms, setCurrentRoom, setEvents } = useActions()
-	const [loading, setLoading] = useState(false)
+	const { status, groups } = useGroups()
+	const { setGroupId, setSheet } = useActions()
+	const { qrData } = useTypedSelector(state => state.qr)
 
-	const getGroupData = (id: string) => {
-		setLoading(true)
-		firestore()
-			.collection('events')
-			.where('roomId', '==', id)
-			.onSnapshot(querySnapshot => {
-				const list: any = []
-				querySnapshot.forEach(doc => {
-					const data = doc.data()
-					list.push({
-						id: doc.id,
-						...data,
-					})
-				})
-
-				setEvents(list)
-				setLoading(false)
-			})
-	}
-
-	useEffect(() => {
-		if (!user) {
-			navigation.navigate('Login')
-			return
-		}
-		const subscriber = firestore()
-			.collection('rooms')
-			.where('members', 'array-contains', user?.uid)
-			.onSnapshot(querySnapshot => {
-				const list: any = []
-				querySnapshot.forEach(doc => {
-					const data = doc.data()
-					list.push({
-						id: doc.id,
-						...data,
-					})
-				})
-
-				setRooms(list)
-			})
-		return () => subscriber()
-	}, [])
-
-	useEffect(() => {
-		!user && navigation.navigate('Login')
-	}, [user])
+	useFocusEffect(
+		useCallback(() => {
+			setGroupId('')
+			qrData && setSheet('joinGroup')
+		}, [])
+	)
 
 	return (
 		<>
-			<Container backgroundColor={theme.colors.background}>
+			<Container backgroundColor={themes.classic.colors.background}>
 				<StyledText
 					fontSize={16}
 					fontWeight={700}
-					color={theme.colors.secondary}
+					color={themes.classic.colors.light}
 				>
-					Список комнат
+					Список групп
 				</StyledText>
 			</Container>
-			{rooms?.length ? (
-				<FlatList
-					contentContainerStyle={{
-						flex: 1,
-						padding: 15,
-						backgroundColor: theme.colors.background,
-					}}
-					data={rooms}
-					renderItem={({ item }: RenderItemProps) => (
-						<Room
-							onPress={() => {
-								getGroupData(item.id)
-								setCurrentRoom({
-									...item,
-								})
-								navigation.navigate('Room')
-							}}
-							room={item}
-							loading={loading}
-						/>
-					)}
-					keyExtractor={room => room.id}
-				/>
-			) : (
-				<Centered backgroundColor={theme.colors.background}>
-					<StyledText fontSize={12} color={theme.colors.dark}>
-						Созданные комнаты появятся здесь...
-					</StyledText>
-				</Centered>
-			)}
+			<View
+				style={{
+					flex: 1,
+					backgroundColor: themes.classic.colors.background,
+					height: '100%',
+				}}
+			>
+				{status !== 'loading' && groups.length ? (
+					<FlatList
+						contentContainerStyle={{
+							padding: 15,
+						}}
+						data={groups}
+						renderItem={({ item }: { item: Group }) => (
+							<GroupItem
+								onPress={() => {
+									setGroupId(item.id)
+									navigation.navigate('Group')
+								}}
+								group={item}
+								loading={false}
+							/>
+						)}
+						keyExtractor={group => group.id}
+					/>
+				) : (
+					<Centered
+						backgroundColor={themes.classic.colors.background}
+					>
+						<StyledText
+							fontSize={12}
+							color={themes.classic.colors.dark}
+						>
+							Созданные группы появятся здесь...
+						</StyledText>
+					</Centered>
+				)}
+			</View>
 
-			<RootActionsModal />
+			<StyledActions>
+				<StyledAction
+					backgroundColor={themes.classic.colors.primary}
+					onPress={() => {
+						setSheet('joinGroup')
+					}}
+				>
+					<AntDesign
+						name='addusergroup'
+						size={23}
+						color={themes.classic.colors.light}
+					/>
+				</StyledAction>
+
+				<StyledAction
+					backgroundColor={themes.classic.colors.primary}
+					onPress={() => {
+						setSheet('createGroup')
+					}}
+				>
+					<AntDesign
+						name='plus'
+						size={23}
+						color={themes.classic.colors.light}
+					/>
+				</StyledAction>
+			</StyledActions>
 		</>
 	)
 }

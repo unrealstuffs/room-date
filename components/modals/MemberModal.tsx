@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { useWindowDimensions, ActivityIndicator } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-import { useTheme } from 'styled-components/native'
 import { ModalComponentProp } from 'react-native-modalfy'
 
 import Avatar from '../parts/Avatar'
@@ -11,17 +9,22 @@ import StyledModal from '../styled/Modal.styled'
 import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import { StyledButton } from '../styled/Button.styled'
+import { useGroupsActions } from '../../hooks/useGroupsActions'
+import { useTheme } from '../../hooks/useTheme'
+import { useGroup } from '../../hooks/useGroup'
 
 const MemberModal = ({
 	modal: { closeModal, params },
 }: ModalComponentProp<ModalStackParams, void, 'MemberModal'>) => {
 	const { width } = useWindowDimensions()
-	const [loading, setLoading] = useState(false)
 	const theme = useTheme()
+	const { group } = useGroup()
+
+	const { exitGroup, deleteGroup, status } = useGroupsActions()
 
 	return (
 		<StyledModal
-			backgroundColor={theme.colors.white}
+			backgroundColor={theme.colors.secondary}
 			style={{ width: width * 0.85 }}
 		>
 			<Flex justifyContent='space-between' style={{ marginBottom: 20 }}>
@@ -29,7 +32,7 @@ const MemberModal = ({
 					<Avatar size={45} uri={params?.photoURL} />
 					<StyledText
 						style={{ marginLeft: 10 }}
-						color={theme.colors.secondary}
+						color={theme.colors.light}
 					>
 						{params?.name}
 					</StyledText>
@@ -38,21 +41,34 @@ const MemberModal = ({
 					onPress={() => closeModal()}
 					name='close'
 					size={20}
+					color={theme.colors.light}
 				/>
 			</Flex>
 			<StyledButton
 				activeOpacity={0.6}
-				disabled={loading}
-				opacity={loading ? 0.6 : 1}
-				onPress={() => {}}
+				disabled={status === 'loading'}
+				opacity={status === 'loading' ? 0.6 : 1}
+				onPress={() => {
+					if (group.members.length > 1 && params) {
+						exitGroup(params?.uid)
+					} else {
+						deleteGroup()
+					}
+					closeModal()
+				}}
 				backgroundColor={theme.colors.primary}
 			>
-				<StyledText color={theme.colors.white}>
-					{loading ? (
-						<ActivityIndicator color={theme.colors.white} />
+				<StyledText color={theme.colors.light}>
+					{status === 'loading' ? (
+						<ActivityIndicator color={theme.colors.light} />
 					) : (
-						'Исключить пользователя'
+						`${
+							params?.isCurrentUser
+								? 'Выйти из группы'
+								: 'Исключить пользователя'
+						}`
 					)}
+					{status === 'error' && 'Ошибка'}
 				</StyledText>
 			</StyledButton>
 		</StyledModal>

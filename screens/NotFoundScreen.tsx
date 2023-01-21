@@ -1,10 +1,9 @@
-import { useTheme } from 'styled-components/native'
-
 import { StyledButton } from '../components/styled/Button.styled'
 import Centered from '../components/styled/Centered.styled'
 import Container from '../components/styled/Container.styled'
 import StyledText from '../components/styled/Text.styled'
-import { RootStackScreenProps } from '../types'
+import { useTheme } from '../hooks/useTheme'
+import { RootStackScreenProps } from '../navigation/types'
 
 const NotFoundScreen = ({ navigation }: RootStackScreenProps<'NotFound'>) => {
 	const theme = useTheme()
@@ -12,8 +11,8 @@ const NotFoundScreen = ({ navigation }: RootStackScreenProps<'NotFound'>) => {
 	return (
 		<Container fullHeight={true} backgroundColor={theme.colors.background}>
 			<Centered>
-				<StyledText>Этой страницы не существует</StyledText>
-				<StyledButton onPress={() => navigation.replace('Root')}>
+				<StyledText>Этой группы не существует</StyledText>
+				<StyledButton onPress={() => navigation.navigate('Root')}>
 					<StyledText>Вернуться на главную</StyledText>
 				</StyledButton>
 			</Centered>

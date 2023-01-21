@@ -7,10 +7,6 @@ interface ProgressProps {
 	backgroundColor: string
 	width: number
 }
-interface ActionProps {
-	border?: boolean
-	borderColor: string
-}
 
 export const StyledCard = styled.View<{ backgroundColor: string }>`
 	margin-bottom: 10px;
@@ -41,12 +37,4 @@ export const StyledCircle = styled.View<{ backgroundColor: string }>`
 	background-color: ${props => props.backgroundColor};
 `
 
-export const StyledAction = styled.TouchableOpacity<ActionProps>`
-	justify-content: center;
-	align-items: center;
-	width: 33%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-right-color: ${props => props.borderColor};
-	border-right-width: ${props => (props.border ? 1 : 0)}px;
-`
+export const StyledAction = styled.TouchableNativeFeedback``

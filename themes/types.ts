@@ -1,5 +1,5 @@
 export interface Theme {
-	name: string
+	name: 'nature' | 'love' | 'classic' | 'sun' | 'blood'
 	colors: {
 		primary: string
 		secondary: string
@@ -7,6 +7,5 @@ export interface Theme {
 		danger: string
 		dark: string
 		light: string
-		white: string
 	}
 }

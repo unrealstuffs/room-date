@@ -11,7 +11,7 @@ const Avatar = ({ onPress, size, uri }: AvatarProps) => {
 		<TouchableOpacity
 			activeOpacity={0.7}
 			onPress={onPress}
-			style={{ backgroundColor: '#fff', borderRadius: 999, elevation: 4 }}
+			style={{ borderRadius: 999, elevation: 4 }}
 		>
 			{uri && (
 				<Image

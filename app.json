@@ -1,13 +1,13 @@
 {
 	"expo": {
-		"name": "room-date",
-		"slug": "room-date",
+		"name": "Note in Groups",
+		"slug": "note-in-groups",
 		"plugins": ["@react-native-google-signin/google-signin"],
-		"version": "1.0.0",
+		"version": "1.0.1",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
 		"scheme": "myapp",
-		"userInterfaceStyle": "automatic",
+		"userInterfaceStyle": "light",
 		"splash": {
 			"image": "./assets/images/splash.png",
 			"resizeMode": "contain",
@@ -26,14 +26,14 @@
 				"foregroundImage": "./assets/images/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.sasha228.roomdate"
+			"package": "com.micros.noteingroups"
 		},
 		"web": {
 			"favicon": "./assets/images/favicon.png"
 		},
 		"extra": {
 			"eas": {
-				"projectId": "bf27beda-3489-437c-b413-cdc49bc3746e"
+				"projectId": "9c966272-9a62-41d6-b324-70a3a7e7e808"
 			}
 		}
 	}
