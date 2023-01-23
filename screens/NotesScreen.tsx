@@ -10,19 +10,19 @@ import Centered from '../components/styled/Centered.styled'
 import StyledText from '../components/styled/Text.styled'
 import { Note } from '../constants/Types'
 import { useActions } from '../hooks/useActions'
-import { useGroup } from '../hooks/useGroup'
 import { useTheme } from '../hooks/useTheme'
+import { useTypedSelector } from '../hooks/useTypedSelector'
 import LayoutGroup from '../layouts/LayoutGroup'
 
 const NotesScreen = () => {
 	const theme = useTheme()
-	const { notes, status } = useGroup()
 	const { setSheet } = useActions()
+	const { notes } = useTypedSelector(state => state.data)
 
 	return (
 		<>
 			<LayoutGroup title='Заметки группы'>
-				{status !== 'loading' && status !== 'error' && notes?.length ? (
+				{notes?.length ? (
 					<FlatList
 						contentContainerStyle={{
 							padding: 15,

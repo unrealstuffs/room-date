@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import firestore from '@react-native-firebase/firestore'
-import { Group, Note, Status } from '../constants/Types'
-import { useTypedSelector } from './useTypedSelector'
+
+import { useActions } from '../hooks/useActions'
+import { useTypedSelector } from '../hooks/useTypedSelector'
+import { Group, Note } from '../constants/Types'
 import fromTimestampToDate from '../utils/fromTimestampToDate'
 
-export const useGroup = () => {
-	const [status, setStatus] = useState<Status>('init')
-	const [group, setGroup] = useState({} as Group)
-	const [notes, setNotes] = useState({} as Note[])
+const GroupProvider = ({ children }: { children: ReactNode }) => {
+	const { setDataGroups, setDataNotes } = useActions()
 	const { groupId } = useTypedSelector(state => state.group)
 
 	useEffect(() => {
@@ -15,9 +15,10 @@ export const useGroup = () => {
 			.collection('groups')
 			.doc(groupId)
 			.onSnapshot(documentSnapshot => {
+				console.log('aaaa')
 				if (documentSnapshot.exists) {
 					const data = documentSnapshot.data() as Group
-					setGroup(data)
+					setDataGroups(data)
 				}
 			})
 		firestore()
@@ -39,10 +40,11 @@ export const useGroup = () => {
 					})
 				})
 
-				setNotes(list)
-				setStatus('success')
+				setDataNotes(list)
 			})
 	}, [groupId])
 
-	return { status, group, notes }
+	return <>{children}</>
 }
+
+export default GroupProvider

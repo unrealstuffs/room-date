@@ -5,6 +5,7 @@ import { groupActions } from '../store/slices/groupSlice'
 import { userActions } from '../store/slices/userSlice'
 import { noteActions } from '../store/slices/noteSlice'
 import { qrActions } from '../store/slices/qrSlice'
+import { dataActions } from '../store/slices/dataSlice'
 
 const allActions = {
 	...userActions,
@@ -12,6 +13,7 @@ const allActions = {
 	...sheetActions,
 	...noteActions,
 	...qrActions,
+	...dataActions,
 }
 
 export const useActions = () => {

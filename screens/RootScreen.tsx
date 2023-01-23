@@ -20,12 +20,13 @@ import { useTypedSelector } from '../hooks/useTypedSelector'
 
 const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 	const { status, groups } = useGroups()
-	const { setGroupId, setSheet } = useActions()
+	const { setGroupId, setSheet, removeData } = useActions()
 	const { qrData } = useTypedSelector(state => state.qr)
 
 	useFocusEffect(
 		useCallback(() => {
 			setGroupId('')
+			removeData()
 			qrData && setSheet('joinGroup')
 		}, [])
 	)

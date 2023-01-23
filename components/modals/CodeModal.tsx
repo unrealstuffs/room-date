@@ -9,15 +9,15 @@ import StyledText from '../styled/Text.styled'
 import StyledModal from '../styled/Modal.styled'
 import { useTheme } from '../../hooks/useTheme'
 import InviteInput from '../parts/InviteInput'
-import { useGroup } from '../../hooks/useGroup'
 import { useState } from 'react'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 const CodeModal = ({
 	modal: { closeModal },
 }: ModalComponentProp<ModalStackParams, void, 'CodeModal'>) => {
 	const { width } = useWindowDimensions()
 	const theme = useTheme()
-	const { group } = useGroup()
+	const { group } = useTypedSelector(state => state.data)
 	const [qrSize, setQRSize] = useState(0)
 
 	return (

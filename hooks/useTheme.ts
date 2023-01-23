@@ -1,10 +1,8 @@
 import themes from '../themes'
-import { useGroup } from './useGroup'
 import { useTypedSelector } from './useTypedSelector'
 
 export const useTheme = () => {
-	const { group } = useGroup()
-	const { groupId } = useTypedSelector(state => state.group)
+	const { group } = useTypedSelector(state => state.data)
 
-	return group?.theme && groupId ? themes[group?.theme] : themes.classic
+	return group?.theme ? themes[group?.theme] : themes.classic
 }

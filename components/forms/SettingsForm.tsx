@@ -8,7 +8,6 @@ import { useTypedSelector } from '../../hooks/useTypedSelector'
 import { useTheme } from '../../hooks/useTheme'
 import InviteInput from '../parts/InviteInput'
 import { useGroupsActions } from '../../hooks/useGroupsActions'
-import { useGroup } from '../../hooks/useGroup'
 import ThemeInput from '../parts/ThemeInput'
 
 const UpdateGroupSchema = Yup.object().shape({
@@ -17,8 +16,8 @@ const UpdateGroupSchema = Yup.object().shape({
 
 const Settings = () => {
 	const theme = useTheme()
-	const { group } = useGroup()
 	const { user } = useTypedSelector(state => state.user)
+	const { group } = useTypedSelector(state => state.data)
 	const { exitGroup, updateGroup, deleteGroup, status } = useGroupsActions()
 
 	const handleExitGroup = () => {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import firestore from '@react-native-firebase/firestore'
 import { Status, User } from '../constants/Types'
-import { useGroup } from './useGroup'
+import { useTypedSelector } from './useTypedSelector'
 
 export const useMembers = () => {
 	const [status, setStatus] = useState<Status>('init')
 	const [members, setMembers] = useState([] as User[])
-	const { group } = useGroup()
+	const { group } = useTypedSelector(state => state.data)
 
 	useEffect(() => {
 		setStatus('loading')

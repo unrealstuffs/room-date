@@ -4,6 +4,7 @@ import { groupReducer } from './slices/groupSlice'
 import { userReducer } from './slices/userSlice'
 import { noteReducer } from './slices/noteSlice'
 import { qrReducer } from './slices/qrSlice'
+import { dataReducer } from './slices/dataSlice'
 
 const rootReducer = combineReducers({
 	user: userReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
 	sheet: sheetReducer,
 	note: noteReducer,
 	qr: qrReducer,
+	data: dataReducer,
 })
 
 export const store = configureStore({

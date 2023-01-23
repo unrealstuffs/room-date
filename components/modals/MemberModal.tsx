@@ -11,14 +11,14 @@ import StyledText from '../styled/Text.styled'
 import { StyledButton } from '../styled/Button.styled'
 import { useGroupsActions } from '../../hooks/useGroupsActions'
 import { useTheme } from '../../hooks/useTheme'
-import { useGroup } from '../../hooks/useGroup'
+import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 const MemberModal = ({
 	modal: { closeModal, params },
 }: ModalComponentProp<ModalStackParams, void, 'MemberModal'>) => {
 	const { width } = useWindowDimensions()
 	const theme = useTheme()
-	const { group } = useGroup()
+	const { group } = useTypedSelector(state => state.data)
 
 	const { exitGroup, deleteGroup, status } = useGroupsActions()
 

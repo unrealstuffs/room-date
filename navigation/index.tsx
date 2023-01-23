@@ -19,8 +19,8 @@ import { useTypedSelector } from '../hooks/useTypedSelector'
 import HeaderRoot from '../components/parts/HeaderRoot'
 import { useTheme } from '../hooks/useTheme'
 import themes from '../themes'
-import { useGroup } from '../hooks/useGroup'
 import ScannerScreen from '../screens/ScannerScreen'
+import GroupProvider from '../providers/GroupProvider'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -80,152 +80,156 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
 	const { openModal } = useModal()
 	const theme = useTheme()
-	const { group } = useGroup()
+	const { group } = useTypedSelector(state => state.data)
 
 	return (
-		<BottomTab.Navigator
-			initialRouteName='Feed'
-			screenOptions={{
-				tabBarActiveTintColor: theme.colors.primary,
-				headerTitleAlign: 'center',
-				headerShadowVisible: false,
-				headerStyle: { backgroundColor: theme.colors.background },
-				tabBarStyle: {
-					backgroundColor: theme.colors.background,
-					borderTopWidth: 0,
-				},
-				headerTitleStyle: { color: theme.colors.light },
-				headerTitle: group.title || 'Загрузка...',
-			}}
-		>
-			<BottomTab.Screen
-				name='Feed'
-				component={FeedScreen}
-				options={({ navigation }: RootTabScreenProps<'Feed'>) => ({
-					title: 'Лента',
+		<GroupProvider>
+			<BottomTab.Navigator
+				initialRouteName='Feed'
+				screenOptions={{
+					tabBarActiveTintColor: theme.colors.primary,
+					headerTitleAlign: 'center',
+					headerShadowVisible: false,
+					headerStyle: { backgroundColor: theme.colors.background },
+					tabBarStyle: {
+						backgroundColor: theme.colors.background,
+						borderTopWidth: 0,
+					},
+					headerTitleStyle: { color: theme.colors.light },
+					headerTitle: group.title || 'Загрузка...',
+				}}
+			>
+				<BottomTab.Screen
+					name='Feed'
+					component={FeedScreen}
+					options={({ navigation }: RootTabScreenProps<'Feed'>) => ({
+						title: 'Лента',
 
-					tabBarIcon: ({ color }) => (
-						<TabBarIcon name='home' color={color} />
-					),
-					headerLeft: () => (
-						<Pressable
-							onPress={() => {
-								navigation.navigate('Root')
-							}}
-							style={({ pressed }) => ({
-								opacity: pressed ? 0.5 : 1,
-							})}
-						>
-							<AntDesign
-								name='arrowleft'
-								size={25}
-								color={theme.colors.light}
-								style={{ marginHorizontal: 15 }}
-							/>
-						</Pressable>
-					),
-					headerRight: () => (
-						<Pressable
-							onPress={() => openModal('CodeModal')}
-							style={({ pressed }) => ({
-								opacity: pressed ? 0.5 : 1,
-							})}
-						>
-							<AntDesign
-								name='qrcode'
-								size={25}
-								color={theme.colors.light}
-								style={{ marginHorizontal: 15 }}
-							/>
-						</Pressable>
-					),
-				})}
-			/>
-			<BottomTab.Screen
-				name='Notes'
-				component={NotesScreen}
-				options={({ navigation }: RootTabScreenProps<'Notes'>) => ({
-					title: 'Заметки',
-					tabBarIcon: ({ color }) => (
-						<TabBarIcon name='calendar' color={color} />
-					),
-					headerLeft: () => (
-						<Pressable
-							onPress={() => {
-								navigation.navigate('Root')
-							}}
-							style={({ pressed }) => ({
-								opacity: pressed ? 0.5 : 1,
-							})}
-						>
-							<AntDesign
-								name='arrowleft'
-								size={25}
-								color={theme.colors.light}
-								style={{ marginHorizontal: 15 }}
-							/>
-						</Pressable>
-					),
-					headerRight: () => (
-						<Pressable
-							onPress={() => openModal('CodeModal')}
-							style={({ pressed }) => ({
-								opacity: pressed ? 0.5 : 1,
-							})}
-						>
-							<AntDesign
-								name='qrcode'
-								size={25}
-								color={theme.colors.light}
-								style={{ marginHorizontal: 15 }}
-							/>
-						</Pressable>
-					),
-				})}
-			/>
-			<BottomTab.Screen
-				name='Settings'
-				component={SettingsScreen}
-				options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
-					title: 'Настройки',
-					tabBarIcon: ({ color }) => (
-						<TabBarIcon name='setting' color={color} />
-					),
-					headerLeft: () => (
-						<Pressable
-							onPress={() => {
-								navigation.navigate('Root')
-							}}
-							style={({ pressed }) => ({
-								opacity: pressed ? 0.5 : 1,
-							})}
-						>
-							<AntDesign
-								name='arrowleft'
-								size={25}
-								color={theme.colors.light}
-								style={{ marginHorizontal: 15 }}
-							/>
-						</Pressable>
-					),
-					headerRight: () => (
-						<Pressable
-							onPress={() => openModal('CodeModal')}
-							style={({ pressed }) => ({
-								opacity: pressed ? 0.5 : 1,
-							})}
-						>
-							<AntDesign
-								name='qrcode'
-								size={25}
-								color={theme.colors.light}
-								style={{ marginHorizontal: 15 }}
-							/>
-						</Pressable>
-					),
-				})}
-			/>
-		</BottomTab.Navigator>
+						tabBarIcon: ({ color }) => (
+							<TabBarIcon name='home' color={color} />
+						),
+						headerLeft: () => (
+							<Pressable
+								onPress={() => {
+									navigation.navigate('Root')
+								}}
+								style={({ pressed }) => ({
+									opacity: pressed ? 0.5 : 1,
+								})}
+							>
+								<AntDesign
+									name='arrowleft'
+									size={25}
+									color={theme.colors.light}
+									style={{ marginHorizontal: 15 }}
+								/>
+							</Pressable>
+						),
+						headerRight: () => (
+							<Pressable
+								onPress={() => openModal('CodeModal')}
+								style={({ pressed }) => ({
+									opacity: pressed ? 0.5 : 1,
+								})}
+							>
+								<AntDesign
+									name='qrcode'
+									size={25}
+									color={theme.colors.light}
+									style={{ marginHorizontal: 15 }}
+								/>
+							</Pressable>
+						),
+					})}
+				/>
+				<BottomTab.Screen
+					name='Notes'
+					component={NotesScreen}
+					options={({ navigation }: RootTabScreenProps<'Notes'>) => ({
+						title: 'Заметки',
+						tabBarIcon: ({ color }) => (
+							<TabBarIcon name='calendar' color={color} />
+						),
+						headerLeft: () => (
+							<Pressable
+								onPress={() => {
+									navigation.navigate('Root')
+								}}
+								style={({ pressed }) => ({
+									opacity: pressed ? 0.5 : 1,
+								})}
+							>
+								<AntDesign
+									name='arrowleft'
+									size={25}
+									color={theme.colors.light}
+									style={{ marginHorizontal: 15 }}
+								/>
+							</Pressable>
+						),
+						headerRight: () => (
+							<Pressable
+								onPress={() => openModal('CodeModal')}
+								style={({ pressed }) => ({
+									opacity: pressed ? 0.5 : 1,
+								})}
+							>
+								<AntDesign
+									name='qrcode'
+									size={25}
+									color={theme.colors.light}
+									style={{ marginHorizontal: 15 }}
+								/>
+							</Pressable>
+						),
+					})}
+				/>
+				<BottomTab.Screen
+					name='Settings'
+					component={SettingsScreen}
+					options={({
+						navigation,
+					}: RootTabScreenProps<'Settings'>) => ({
+						title: 'Настройки',
+						tabBarIcon: ({ color }) => (
+							<TabBarIcon name='setting' color={color} />
+						),
+						headerLeft: () => (
+							<Pressable
+								onPress={() => {
+									navigation.navigate('Root')
+								}}
+								style={({ pressed }) => ({
+									opacity: pressed ? 0.5 : 1,
+								})}
+							>
+								<AntDesign
+									name='arrowleft'
+									size={25}
+									color={theme.colors.light}
+									style={{ marginHorizontal: 15 }}
+								/>
+							</Pressable>
+						),
+						headerRight: () => (
+							<Pressable
+								onPress={() => openModal('CodeModal')}
+								style={({ pressed }) => ({
+									opacity: pressed ? 0.5 : 1,
+								})}
+							>
+								<AntDesign
+									name='qrcode'
+									size={25}
+									color={theme.colors.light}
+									style={{ marginHorizontal: 15 }}
+								/>
+							</Pressable>
+						),
+					})}
+				/>
+			</BottomTab.Navigator>
+		</GroupProvider>
 	)
 }
 

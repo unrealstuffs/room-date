@@ -3,26 +3,32 @@ import { FlatList } from 'react-native'
 import NoteItem from '../components/parts/NoteItem'
 import Centered from '../components/styled/Centered.styled'
 import StyledText from '../components/styled/Text.styled'
-import { useGroup } from '../hooks/useGroup'
 import { Note } from '../constants/Types'
 import { useTheme } from '../hooks/useTheme'
 import LayoutGroup from '../layouts/LayoutGroup'
+import { useTypedSelector } from '../hooks/useTypedSelector'
 
 const FeedScreen = () => {
 	const theme = useTheme()
-	const { notes, status } = useGroup()
+	const { notes } = useTypedSelector(state => state.data)
+
+	let pinnedNotes = [] as Note[]
+
+	if (notes.length) {
+		pinnedNotes = notes.filter(item => item.pinned)
+	}
 
 	return (
 		<LayoutGroup title='Лента группы'>
-			{status !== 'loading' && status !== 'error' && notes?.length ? (
+			{pinnedNotes.length ? (
 				<FlatList
 					contentContainerStyle={{
 						padding: 15,
 					}}
-					data={notes}
-					renderItem={({ item }: { item: Note }) =>
-						item.pinned ? <NoteItem note={item} /> : null
-					}
+					data={pinnedNotes}
+					renderItem={({ item }: { item: Note }) => (
+						<NoteItem note={item} />
+					)}
 					keyExtractor={note => note.id}
 				/>
 			) : (
