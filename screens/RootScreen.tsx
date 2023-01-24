@@ -19,7 +19,7 @@ import themes from '../themes'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 
 const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
-	const { status, groups } = useGroups()
+	const { groups } = useTypedSelector(state => state.data)
 	const { setGroupId, setSheet, removeData } = useActions()
 	const { qrData } = useTypedSelector(state => state.qr)
 
@@ -49,7 +49,7 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 					height: '100%',
 				}}
 			>
-				{status !== 'loading' && groups.length ? (
+				{groups.length ? (
 					<FlatList
 						contentContainerStyle={{
 							padding: 15,

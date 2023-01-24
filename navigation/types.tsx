@@ -9,6 +9,7 @@ import {
 	NavigatorScreenParams,
 } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { Note } from '../constants/Types'
 
 declare global {
 	namespace ReactNavigation {
@@ -19,6 +20,7 @@ declare global {
 export type RootStackParamList = {
 	Login: undefined
 	Root: undefined
+	Note: Omit<Note, 'groupId' | 'date' | 'createdAt'> | undefined
 	User: undefined
 	Group: NavigatorScreenParams<RootTabParamList> | undefined
 	Scanner: undefined

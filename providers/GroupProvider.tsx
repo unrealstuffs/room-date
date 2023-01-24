@@ -7,18 +7,37 @@ import { Group, Note } from '../constants/Types'
 import fromTimestampToDate from '../utils/fromTimestampToDate'
 
 const GroupProvider = ({ children }: { children: ReactNode }) => {
-	const { setDataGroups, setDataNotes } = useActions()
-	const { groupId } = useTypedSelector(state => state.group)
+	const { setDataGroups, setDataNotes, setDataGroup, setDataNote } =
+		useActions()
+	const { groupId, noteId } = useTypedSelector(state => state.group)
+	const { user } = useTypedSelector(state => state.user)
+
+	useEffect(() => {
+		firestore()
+			.collection('groups')
+			.where('members', 'array-contains', user?.uid)
+			.onSnapshot(querySnapshot => {
+				const list: any = []
+				querySnapshot.forEach(doc => {
+					const data = doc.data()
+					list.push({
+						id: doc.id,
+						...data,
+					})
+				})
+
+				setDataGroups(list)
+			})
+	}, [user])
 
 	useEffect(() => {
 		firestore()
 			.collection('groups')
 			.doc(groupId)
 			.onSnapshot(documentSnapshot => {
-				console.log('aaaa')
 				if (documentSnapshot.exists) {
 					const data = documentSnapshot.data() as Group
-					setDataGroups(data)
+					setDataGroup(data)
 				}
 			})
 		firestore()
@@ -43,6 +62,23 @@ const GroupProvider = ({ children }: { children: ReactNode }) => {
 				setDataNotes(list)
 			})
 	}, [groupId])
+
+	useEffect(() => {
+		firestore()
+			.collection('groups')
+			.doc(groupId)
+			.collection('notes')
+			.doc(noteId)
+			.onSnapshot(documentSnapshot => {
+				if (documentSnapshot.exists) {
+					const data = documentSnapshot.data() as Note
+					setDataNote({
+						...data,
+						id: documentSnapshot.id,
+					})
+				}
+			})
+	}, [noteId])
 
 	return <>{children}</>
 }
