@@ -9,10 +9,8 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useActions } from '../../hooks/useActions'
 import { useTheme } from '../../hooks/useTheme'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
-import FormCreateNote from '../forms/FormCreateNote'
 import FormCreateGroup from '../forms/FormCreateGroup'
 import FormJoinGroup from '../forms/FormJoinGroup'
-import FormUpdateNote from '../forms/FormUpdateNote'
 
 const BottomActionsModal = () => {
 	const bottomModal = useRef<BottomSheetModal>(null)
@@ -60,8 +58,6 @@ const BottomActionsModal = () => {
 				<BottomSheetView onLayout={handleContentLayout}>
 					{sheet === 'createGroup' && <FormCreateGroup />}
 					{sheet === 'joinGroup' && <FormJoinGroup />}
-					{sheet === 'createNote' && <FormCreateNote />}
-					{sheet === 'editNote' && <FormUpdateNote />}
 				</BottomSheetView>
 			</BottomSheetModal>
 		</BottomSheetModalProvider>

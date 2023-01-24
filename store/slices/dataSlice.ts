@@ -3,15 +3,23 @@ import { Group, Note } from '../../constants/Types'
 
 const initialState = {
 	group: {} as Group,
+	note: {} as Note,
+	groups: [] as Group[],
 	notes: [] as Note[],
 }
 
 const dataSlice = createSlice({
-	name: 'groupId',
+	name: 'data',
 	initialState,
 	reducers: {
-		setDataGroups(state, action: PayloadAction<Group>) {
+		setDataGroup(state, action: PayloadAction<Group>) {
 			state.group = action.payload
+		},
+		setDataNote(state, action: PayloadAction<Note>) {
+			state.note = action.payload
+		},
+		setDataGroups(state, action: PayloadAction<Group[]>) {
+			state.groups = action.payload
 		},
 		setDataNotes(state, action: PayloadAction<Note[]>) {
 			state.notes = action.payload

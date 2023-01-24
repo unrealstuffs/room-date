@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import firestore from '@react-native-firebase/firestore'
-import { CreateNote, Status } from '../constants/Types'
+import { CreateNote, Note, Status } from '../constants/Types'
 import { useTypedSelector } from './useTypedSelector'
 
 export const useNotes = () => {
 	const [status, setStatus] = useState<Status>('init')
 	const { groupId } = useTypedSelector(state => state.group)
 
-	const createNote = (data: CreateNote) => {
+	const createNote = (data: Pick<Note, 'title' | 'description'>) => {
 		setStatus('loading')
 
 		firestore()
@@ -18,7 +18,6 @@ export const useNotes = () => {
 				createdAt: firestore.FieldValue.serverTimestamp(),
 				title: data.title,
 				description: data.description,
-				date: data.date || null,
 				pinned: false,
 			})
 			.then(() => {
@@ -29,18 +28,13 @@ export const useNotes = () => {
 			})
 	}
 
-	const updateNote = (
-		noteId: string,
-		title: string,
-		date: Date,
-		description: string
-	) => {
+	const updateNote = (data: Pick<Note, 'id' | 'title' | 'description'>) => {
 		firestore()
 			.collection('groups')
 			.doc(groupId)
 			.collection('notes')
-			.doc(noteId)
-			.update({ title, date, description })
+			.doc(data.id)
+			.update({ ...data })
 	}
 
 	const pinNote = (noteId: string, pinned: boolean) => {

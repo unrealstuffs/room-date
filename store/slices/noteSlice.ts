@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UpdateNote } from '../../constants/Types'
+import { Note } from '../../constants/Types'
 
 const initialState = {
-	note: {} as UpdateNote,
+	note: {} as Note,
 }
 
 const noteSlice = createSlice({

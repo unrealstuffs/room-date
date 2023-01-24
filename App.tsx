@@ -12,6 +12,7 @@ import { store } from './store'
 import AuthProvider from './providers/AuthProvider'
 import ModalConfigProvider from './providers/ModalConfigProvider'
 import BottomActionsModal from './components/modals/BottomSheetModal'
+import GroupProvider from './providers/GroupProvider'
 
 dayjs.locale('ru')
 
@@ -28,9 +29,11 @@ export default function App() {
 						<GestureHandlerRootView style={{ flex: 1 }}>
 							<NavigationContainer>
 								<ModalConfigProvider>
-									<RootNavigator />
-									<StatusBar />
-									<BottomActionsModal />
+									<GroupProvider>
+										<RootNavigator />
+										<StatusBar />
+										<BottomActionsModal />
+									</GroupProvider>
 								</ModalConfigProvider>
 							</NavigationContainer>
 						</GestureHandlerRootView>

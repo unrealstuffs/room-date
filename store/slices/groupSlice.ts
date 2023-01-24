@@ -1,15 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = {
-	groupId: '' as string,
+	groupId: '',
+	noteId: '',
 }
 
 const groupSlice = createSlice({
-	name: 'groupId',
+	name: 'dataIds',
 	initialState,
 	reducers: {
 		setGroupId(state, action: PayloadAction<string>) {
 			state.groupId = action.payload
+		},
+		setNoteId(state, action: PayloadAction<string>) {
+			state.noteId = action.payload
+		},
+		removeIds(state) {
+			;(state.groupId = ''), (state.noteId = '')
 		},
 	},
 })

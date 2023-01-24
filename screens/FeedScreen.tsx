@@ -7,9 +7,14 @@ import { Note } from '../constants/Types'
 import { useTheme } from '../hooks/useTheme'
 import LayoutGroup from '../layouts/LayoutGroup'
 import { useTypedSelector } from '../hooks/useTypedSelector'
+import { RootTabScreenProps } from '../navigation/types'
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback } from 'react'
+import { useActions } from '../hooks/useActions'
 
-const FeedScreen = () => {
+const FeedScreen = ({ navigation }: RootTabScreenProps<'Feed'>) => {
 	const theme = useTheme()
+	const { setNoteId, setDataNote } = useActions()
 	const { notes } = useTypedSelector(state => state.data)
 
 	let pinnedNotes = [] as Note[]
@@ -17,6 +22,13 @@ const FeedScreen = () => {
 	if (notes.length) {
 		pinnedNotes = notes.filter(item => item.pinned)
 	}
+
+	useFocusEffect(
+		useCallback(() => {
+			setNoteId('')
+			setDataNote({} as Note)
+		}, [])
+	)
 
 	return (
 		<LayoutGroup title='Лента группы'>
@@ -27,7 +39,13 @@ const FeedScreen = () => {
 					}}
 					data={pinnedNotes}
 					renderItem={({ item }: { item: Note }) => (
-						<NoteItem note={item} />
+						<NoteItem
+							note={item}
+							onPress={() => {
+								setNoteId(item.id)
+								navigation.navigate('Note')
+							}}
+						/>
 					)}
 					keyExtractor={note => note.id}
 				/>
