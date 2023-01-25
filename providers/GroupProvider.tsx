@@ -48,14 +48,12 @@ const GroupProvider = ({ children }: { children: ReactNode }) => {
 				const list: any = []
 				querySnapshot.forEach(doc => {
 					const data = doc.data() as Note & {
-						date: { seconds: number; nanoseconds: number }
 						createdAt: { seconds: number; nanoseconds: number }
 					}
 					list.push({
 						...data,
 						id: doc.id,
 						createdAt: fromTimestampToDate(data.createdAt),
-						date: fromTimestampToDate(data.date),
 					})
 				})
 
@@ -71,10 +69,13 @@ const GroupProvider = ({ children }: { children: ReactNode }) => {
 			.doc(noteId)
 			.onSnapshot(documentSnapshot => {
 				if (documentSnapshot.exists) {
-					const data = documentSnapshot.data() as Note
+					const data = documentSnapshot.data() as Note & {
+						createdAt: { seconds: number; nanoseconds: number }
+					}
 					setDataNote({
 						...data,
 						id: documentSnapshot.id,
+						createdAt: fromTimestampToDate(data.createdAt),
 					})
 				}
 			})

@@ -1,4 +1,5 @@
 import { TouchableNativeFeedback, View } from 'react-native'
+import dayjs from 'dayjs'
 
 import { StyledCard } from '../styled/NoteCard.styled'
 import Flex from '../styled/Flex.styled'
@@ -6,7 +7,6 @@ import StyledText from '../styled/Text.styled'
 import sliceText from '../../utils/sliceText'
 import { Note } from '../../constants/Types'
 import { useTheme } from '../../hooks/useTheme'
-import dayjs from 'dayjs'
 
 const NoteItem = ({ note, onPress }: { note: Note; onPress: () => void }) => {
 	const theme = useTheme()
@@ -41,7 +41,7 @@ const NoteItem = ({ note, onPress }: { note: Note; onPress: () => void }) => {
 						</StyledText>
 					</Flex>
 					<Flex justifyContent='space-between' alignItems='center'>
-						<StyledText fontSize={12} color={theme.colors.light}>
+						<StyledText fontSize={12} color={theme.colors.dark}>
 							{dayjs(note.createdAt).format('DD/MM/YYYY')}
 						</StyledText>
 					</Flex>

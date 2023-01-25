@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons'
+import dayjs from 'dayjs'
 import { Formik, FormikProps, FormikValues } from 'formik'
 import { useEffect, useRef } from 'react'
 import { ScrollView, TouchableOpacity } from 'react-native'
@@ -7,6 +8,7 @@ import * as Yup from 'yup'
 import Container from '../components/styled/Container.styled'
 import { StyledInput } from '../components/styled/Input.styled'
 import Separator from '../components/styled/Separator.styled'
+import StyledText from '../components/styled/Text.styled'
 import { useNotes } from '../hooks/useNotes'
 import { useTheme } from '../hooks/useTheme'
 import { useTypedSelector } from '../hooks/useTypedSelector'
@@ -140,6 +142,18 @@ const NoteScreen = ({ navigation }: RootStackScreenProps<'Note'>) => {
 								placeholderTextColor={theme.colors.dark}
 							/>
 							<Separator color={theme.colors.light} />
+							{note.createdAt && (
+								<StyledText
+									fontSize={12}
+									color={theme.colors.dark}
+									style={{
+										paddingHorizontal: 10,
+										paddingTop: 5,
+									}}
+								>
+									{dayjs(note.createdAt).format('DD/MM/YYYY')}
+								</StyledText>
+							)}
 							<StyledInput
 								borderColor='transparent'
 								multiline
