@@ -1,5 +1,5 @@
 import { TouchableNativeFeedback, ActivityIndicator } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 import { AntDesign } from '@expo/vector-icons'
 
 import StyledText from '../styled/Text.styled'
@@ -24,25 +24,23 @@ const StyledCard = styled.View<{ backgroundColor: string }>`
 `
 
 const GroupItem = ({ group, loading, onPress }: GroupProps) => {
+	const theme = useTheme()
 	return (
 		<TouchableNativeFeedback onPress={onPress}>
 			<StyledCard
 				style={{ elevation: 4 }}
-				backgroundColor={themes.classic.colors.secondary}
+				backgroundColor={theme.colors.secondary}
 			>
 				<Flex flexDirection='column'>
 					<StyledText
 						fontSize={14}
 						fontWeight={700}
-						color={themes.classic.colors.light}
+						color={theme.colors.light}
 						style={{ marginBottom: 5 }}
 					>
 						{group.title ? group.title : group.id}
 					</StyledText>
-					<StyledText
-						color={themes.classic.colors.dark}
-						fontSize={12}
-					>
+					<StyledText color={theme.colors.dark} fontSize={12}>
 						{group.members?.length || 0} участников{' '}
 					</StyledText>
 				</Flex>

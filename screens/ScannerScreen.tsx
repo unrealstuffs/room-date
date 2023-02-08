@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import {
-	View,
-	StyleSheet,
-	ActivityIndicator,
-	DeviceEventEmitter,
-} from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import StyledText from '../components/styled/Text.styled'
 import { AntDesign } from '@expo/vector-icons'
 import {
@@ -14,7 +9,6 @@ import {
 	StyledActions,
 } from '../components/styled/Actions.styled'
 import { useNavigation } from '@react-navigation/native'
-import { useTypedSelector } from '../hooks/useTypedSelector'
 import { useActions } from '../hooks/useActions'
 
 const ScannerScreen = () => {

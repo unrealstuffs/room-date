@@ -1,6 +1,7 @@
+import { useTheme } from 'styled-components/native'
+
 import Container from '../components/styled/Container.styled'
 import SettingsForm from '../components/forms/SettingsForm'
-import { useTheme } from '../hooks/useTheme'
 import LayoutGroup from '../layouts/LayoutGroup'
 
 const SettingsScreen = () => {

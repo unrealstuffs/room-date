@@ -13,7 +13,7 @@ import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import { StyledButton } from '../styled/Button.styled'
 import StyledModal from '../styled/Modal.styled'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 
 const UserModal = ({
 	modal: { closeModal },
@@ -39,11 +39,15 @@ const UserModal = ({
 	return (
 		<StyledModal
 			backgroundColor={theme.colors.secondary}
-			style={{ width: width * 0.85 }}
+			style={{ width: width * 0.95 }}
 		>
 			<Flex justifyContent='space-between' style={{ marginBottom: 20 }}>
 				<Flex justifyContent='space-between' alignItems='center'>
-					<Avatar size={45} uri={user?.photoURL} />
+					<Avatar
+						size={45}
+						name={user.displayName}
+						uri={user?.photoURL}
+					/>
 					<StyledText
 						fontSize={14}
 						style={{ marginLeft: 10 }}

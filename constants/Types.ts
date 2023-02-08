@@ -12,7 +12,7 @@ export interface Note {
 	groupId: string
 	title: string
 	description: string
-	createdAt: Date
+	createdAt: { seconds: number; nanoseconds: number }
 	date: Date
 	pinned: boolean
 }
@@ -20,7 +20,7 @@ export interface Note {
 export interface User {
 	uid: string
 	displayName: string
-	photoURL: string
+	photoURL?: string
 }
 
 export interface CreateNote {

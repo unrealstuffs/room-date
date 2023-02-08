@@ -5,18 +5,23 @@ import { useActions } from '../hooks/useActions'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { Group, Note } from '../constants/Types'
 import fromTimestampToDate from '../utils/fromTimestampToDate'
+import { ThemeProvider } from 'styled-components/native'
+import themes from '../themes'
 
 const GroupProvider = ({ children }: { children: ReactNode }) => {
 	const { setDataGroups, setDataNotes, setDataGroup, setDataNote } =
 		useActions()
 	const { groupId, noteId } = useTypedSelector(state => state.group)
+	const { group } = useTypedSelector(state => state.data)
 	const { user } = useTypedSelector(state => state.user)
 
 	useEffect(() => {
-		firestore()
-			.collection('groups')
-			.where('members', 'array-contains', user?.uid)
-			.onSnapshot(querySnapshot => {
+		if (user) {
+			const groupsRef = firestore()
+				.collection('groups')
+				.where('members', 'array-contains', user.uid)
+
+			groupsRef.onSnapshot(querySnapshot => {
 				const list: any = []
 				querySnapshot.forEach(doc => {
 					const data = doc.data()
@@ -28,60 +33,63 @@ const GroupProvider = ({ children }: { children: ReactNode }) => {
 
 				setDataGroups(list)
 			})
+		}
 	}, [user])
 
 	useEffect(() => {
-		firestore()
-			.collection('groups')
-			.doc(groupId)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					const data = documentSnapshot.data() as Group
-					setDataGroup(data)
-				}
-			})
-		firestore()
-			.collection('groups')
-			.doc(groupId)
-			.collection('notes')
-			.onSnapshot(querySnapshot => {
-				const list: any = []
-				querySnapshot.forEach(doc => {
-					const data = doc.data() as Note & {
-						createdAt: { seconds: number; nanoseconds: number }
+		if (user) {
+			firestore()
+				.collection('groups')
+				.doc(groupId)
+				.onSnapshot(documentSnapshot => {
+					if (documentSnapshot.exists) {
+						const data = documentSnapshot.data() as Group
+						setDataGroup(data)
 					}
-					list.push({
-						...data,
-						id: doc.id,
-						createdAt: fromTimestampToDate(data.createdAt),
-					})
 				})
+			firestore()
+				.collection('groups')
+				.doc(groupId)
+				.collection('notes')
+				.onSnapshot(querySnapshot => {
+					const list: any = []
+					querySnapshot.forEach(doc => {
+						const data = doc.data() as Note
+						list.push({
+							...data,
+							id: doc.id,
+						})
+					})
 
-				setDataNotes(list)
-			})
+					setDataNotes(list)
+				})
+		}
 	}, [groupId])
 
 	useEffect(() => {
-		firestore()
-			.collection('groups')
-			.doc(groupId)
-			.collection('notes')
-			.doc(noteId)
-			.onSnapshot(documentSnapshot => {
-				if (documentSnapshot.exists) {
-					const data = documentSnapshot.data() as Note & {
-						createdAt: { seconds: number; nanoseconds: number }
+		if (user) {
+			firestore()
+				.collection('groups')
+				.doc(groupId)
+				.collection('notes')
+				.doc(noteId)
+				.onSnapshot(documentSnapshot => {
+					if (documentSnapshot.exists) {
+						const data = documentSnapshot.data() as Note
+						setDataNote({
+							...data,
+							id: documentSnapshot.id,
+						})
 					}
-					setDataNote({
-						...data,
-						id: documentSnapshot.id,
-						createdAt: fromTimestampToDate(data.createdAt),
-					})
-				}
-			})
+				})
+		}
 	}, [noteId])
 
-	return <>{children}</>
+	return (
+		<ThemeProvider theme={themes[group.theme] || themes.classic}>
+			{children}
+		</ThemeProvider>
+	)
 }
 
 export default GroupProvider

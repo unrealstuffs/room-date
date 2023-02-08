@@ -1,24 +1,19 @@
-import { useWindowDimensions, View } from 'react-native'
+import { useWindowDimensions } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { ModalComponentProp } from 'react-native-modalfy'
-import QRCode from 'react-native-qrcode-svg'
 
 import { ModalStackParams } from '../../providers/ModalConfigProvider'
 import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import StyledModal from '../styled/Modal.styled'
 import { useTheme } from 'styled-components/native'
-import InviteInput from '../parts/InviteInput'
-import { useState } from 'react'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import FormLogin from '../forms/FormLogin'
 
-const CodeModal = ({
+const LoginModal = ({
 	modal: { closeModal },
-}: ModalComponentProp<ModalStackParams, void, 'CodeModal'>) => {
+}: ModalComponentProp<ModalStackParams, void, 'LoginModal'>) => {
 	const { width } = useWindowDimensions()
 	const theme = useTheme()
-	const { group } = useTypedSelector(state => state.data)
-	const [qrSize, setQRSize] = useState(0)
 
 	return (
 		<StyledModal
@@ -35,7 +30,7 @@ const CodeModal = ({
 					fontWeight={700}
 					color={theme.colors.light}
 				>
-					Код приглашения
+					Вход
 				</StyledText>
 				<AntDesign
 					onPress={() => closeModal()}
@@ -44,23 +39,9 @@ const CodeModal = ({
 					color={theme.colors.light}
 				/>
 			</Flex>
-			<View
-				style={{ marginBottom: 15 }}
-				onLayout={event => {
-					const { width } = event.nativeEvent.layout
-					setQRSize(width)
-				}}
-			>
-				<QRCode
-					value={group.inviteCode}
-					size={qrSize}
-					quietZone={15}
-					backgroundColor={theme.colors.light}
-				/>
-			</View>
-			<InviteInput inviteCode={group.inviteCode} />
+			<FormLogin />
 		</StyledModal>
 	)
 }
 
-export default CodeModal
+export default LoginModal

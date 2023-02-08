@@ -17,7 +17,8 @@ const HeaderGroup = () => {
 				<View key={member.uid} style={{ marginRight: 10 }}>
 					<Avatar
 						size={40}
-						uri={member?.photoURL}
+						uri={member.photoURL}
+						name={member.displayName}
 						onPress={() => {
 							openModal('MemberModal', {
 								uid: member.uid,

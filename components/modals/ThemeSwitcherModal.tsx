@@ -8,7 +8,7 @@ import allThemes from '../../themes'
 import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import StyledModal from '../styled/Modal.styled'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import { useGroupsActions } from '../../hooks/useGroupsActions'
 
 interface ItemProps {
@@ -39,7 +39,7 @@ const ThemeSwitcherModal = ({
 	return (
 		<StyledModal
 			backgroundColor={theme.colors.secondary}
-			style={{ width: width * 0.85 }}
+			style={{ width: width * 0.95 }}
 		>
 			<Flex
 				alignItems='center'

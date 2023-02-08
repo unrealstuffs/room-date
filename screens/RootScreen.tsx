@@ -1,13 +1,13 @@
 import { FlatList, View } from 'react-native'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { AntDesign } from '@expo/vector-icons'
+import { useTheme } from 'styled-components/native'
 
 import GroupItem from '../components/parts/GroupItem'
 import Centered from '../components/styled/Centered.styled'
 import Container from '../components/styled/Container.styled'
 import StyledText from '../components/styled/Text.styled'
 import { RootStackScreenProps } from '../navigation/types'
-import { useGroups } from '../hooks/useGroups'
 import { Group } from '../constants/Types'
 import { useActions } from '../hooks/useActions'
 import {
@@ -15,13 +15,34 @@ import {
 	StyledActions,
 } from '../components/styled/Actions.styled'
 import { useFocusEffect } from '@react-navigation/native'
-import themes from '../themes'
 import { useTypedSelector } from '../hooks/useTypedSelector'
+import HeaderRoot from '../components/parts/HeaderRoot'
+import Avatar from '../components/parts/Avatar'
 
 const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 	const { groups } = useTypedSelector(state => state.data)
 	const { setGroupId, setSheet, removeData } = useActions()
 	const { qrData } = useTypedSelector(state => state.qr)
+	const { user } = useTypedSelector(state => state.user)
+	const theme = useTheme()
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerTitle: () => <HeaderRoot />,
+			headerRight: () => (
+				<Avatar
+					size={30}
+					uri={user.photoURL}
+					name={user.displayName || 'Не известно'}
+					onPress={() => navigation.navigate('User')}
+				/>
+			),
+			headerShadowVisible: false,
+			headerStyle: {
+				backgroundColor: theme.colors.background,
+			},
+		})
+	}, [theme, user])
 
 	useFocusEffect(
 		useCallback(() => {
@@ -33,11 +54,11 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 
 	return (
 		<>
-			<Container backgroundColor={themes.classic.colors.background}>
+			<Container backgroundColor={theme.colors.background}>
 				<StyledText
 					fontSize={16}
 					fontWeight={700}
-					color={themes.classic.colors.light}
+					color={theme.colors.light}
 				>
 					Список групп
 				</StyledText>
@@ -45,7 +66,7 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 			<View
 				style={{
 					flex: 1,
-					backgroundColor: themes.classic.colors.background,
+					backgroundColor: theme.colors.background,
 					height: '100%',
 				}}
 			>
@@ -68,13 +89,8 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 						keyExtractor={group => group.id}
 					/>
 				) : (
-					<Centered
-						backgroundColor={themes.classic.colors.background}
-					>
-						<StyledText
-							fontSize={12}
-							color={themes.classic.colors.dark}
-						>
+					<Centered backgroundColor={theme.colors.background}>
+						<StyledText fontSize={12} color={theme.colors.dark}>
 							Созданные группы появятся здесь...
 						</StyledText>
 					</Centered>
@@ -83,7 +99,7 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 
 			<StyledActions>
 				<StyledAction
-					backgroundColor={themes.classic.colors.primary}
+					backgroundColor={theme.colors.primary}
 					onPress={() => {
 						setSheet('joinGroup')
 					}}
@@ -91,12 +107,12 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 					<AntDesign
 						name='addusergroup'
 						size={23}
-						color={themes.classic.colors.light}
+						color={theme.colors.light}
 					/>
 				</StyledAction>
 
 				<StyledAction
-					backgroundColor={themes.classic.colors.primary}
+					backgroundColor={theme.colors.primary}
 					onPress={() => {
 						setSheet('createGroup')
 					}}
@@ -104,7 +120,7 @@ const RootScreen = ({ navigation }: RootStackScreenProps<'Root'>) => {
 					<AntDesign
 						name='plus'
 						size={23}
-						color={themes.classic.colors.light}
+						color={theme.colors.light}
 					/>
 				</StyledAction>
 			</StyledActions>

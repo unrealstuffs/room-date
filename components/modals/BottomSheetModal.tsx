@@ -7,7 +7,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useActions } from '../../hooks/useActions'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
 import FormCreateGroup from '../forms/FormCreateGroup'
 import FormJoinGroup from '../forms/FormJoinGroup'

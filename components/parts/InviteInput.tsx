@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { StyledInput } from '../styled/Input.styled'
 import { AntDesign } from '@expo/vector-icons'
 import copyToClipboard from '../../utils/copyToClipboard'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import showToast from '../../utils/showToast'
 import Flex from '../styled/Flex.styled'
 
