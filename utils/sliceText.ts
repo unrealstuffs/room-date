@@ -1,4 +1,4 @@
-const sliceText = (text: string, limit: number = 60) => {
+const sliceText = (text: string, limit: number = 80) => {
 	text = text.trim()
 	if (text.length <= limit) return text
 

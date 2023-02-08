@@ -10,10 +10,11 @@ import { StyledInput } from '../components/styled/Input.styled'
 import Separator from '../components/styled/Separator.styled'
 import StyledText from '../components/styled/Text.styled'
 import { useNotes } from '../hooks/useNotes'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { RootStackScreenProps } from '../navigation/types'
 import showToast from '../utils/showToast'
+import fromTimestampToDate from '../utils/fromTimestampToDate'
 
 const NoteSchema = Yup.object().shape({
 	title: Yup.string().required('Название не указано'),
@@ -151,7 +152,9 @@ const NoteScreen = ({ navigation }: RootStackScreenProps<'Note'>) => {
 										paddingTop: 5,
 									}}
 								>
-									{dayjs(note.createdAt).format('DD/MM/YYYY')}
+									{dayjs(
+										fromTimestampToDate(note.createdAt)
+									).format('DD/MM/YYYY')}
 								</StyledText>
 							)}
 							<StyledInput
@@ -167,14 +170,14 @@ const NoteScreen = ({ navigation }: RootStackScreenProps<'Note'>) => {
 								placeholderTextColor={theme.colors.dark}
 								style={{ flex: 1 }}
 							/>
-							{errors.title &&
+							{/* {errors.title &&
 								touched.title &&
 								typeof errors.title === 'string' &&
 								showToast(errors.title)}
 							{errors.description &&
 								touched.description &&
 								typeof errors.description === 'string' &&
-								showToast(errors.description)}
+								showToast(errors.description)} */}
 						</>
 					)}
 				</Formik>

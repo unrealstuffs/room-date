@@ -11,7 +11,7 @@ import useCachedResources from './hooks/useCachedResources'
 import { store } from './store'
 import AuthProvider from './providers/AuthProvider'
 import ModalConfigProvider from './providers/ModalConfigProvider'
-import BottomActionsModal from './components/modals/BottomSheetModal'
+import BottomSheetModal from './components/modals/BottomSheetModal'
 import GroupProvider from './providers/GroupProvider'
 
 dayjs.locale('ru')
@@ -28,13 +28,13 @@ export default function App() {
 					<AuthProvider>
 						<GestureHandlerRootView style={{ flex: 1 }}>
 							<NavigationContainer>
-								<ModalConfigProvider>
-									<GroupProvider>
+								<GroupProvider>
+									<ModalConfigProvider>
 										<RootNavigator />
 										<StatusBar />
-										<BottomActionsModal />
-									</GroupProvider>
-								</ModalConfigProvider>
+										<BottomSheetModal />
+									</ModalConfigProvider>
+								</GroupProvider>
 							</NavigationContainer>
 						</GestureHandlerRootView>
 					</AuthProvider>

@@ -6,7 +6,8 @@ import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import sliceText from '../../utils/sliceText'
 import { Note } from '../../constants/Types'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
+import fromTimestampToDate from '../../utils/fromTimestampToDate'
 
 const NoteItem = ({ note, onPress }: { note: Note; onPress: () => void }) => {
 	const theme = useTheme()
@@ -42,7 +43,9 @@ const NoteItem = ({ note, onPress }: { note: Note; onPress: () => void }) => {
 					</Flex>
 					<Flex justifyContent='space-between' alignItems='center'>
 						<StyledText fontSize={12} color={theme.colors.dark}>
-							{dayjs(note.createdAt).format('DD/MM/YYYY')}
+							{dayjs(fromTimestampToDate(note.createdAt)).format(
+								'DD/MM/YYYY'
+							)}
 						</StyledText>
 					</Flex>
 				</View>

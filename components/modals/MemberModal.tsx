@@ -10,7 +10,7 @@ import Flex from '../styled/Flex.styled'
 import StyledText from '../styled/Text.styled'
 import { StyledButton } from '../styled/Button.styled'
 import { useGroupsActions } from '../../hooks/useGroupsActions'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
 
 const MemberModal = ({
@@ -25,11 +25,15 @@ const MemberModal = ({
 	return (
 		<StyledModal
 			backgroundColor={theme.colors.secondary}
-			style={{ width: width * 0.85 }}
+			style={{ width: width * 0.95 }}
 		>
 			<Flex justifyContent='space-between' style={{ marginBottom: 20 }}>
 				<Flex justifyContent='space-between' alignItems='center'>
-					<Avatar size={45} uri={params?.photoURL} />
+					<Avatar
+						size={45}
+						uri={params?.photoURL}
+						name={params?.name || 'Не известно'}
+					/>
 					<StyledText
 						style={{ marginLeft: 10 }}
 						color={theme.colors.light}

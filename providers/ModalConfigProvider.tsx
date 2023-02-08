@@ -10,6 +10,8 @@ import UserModal from '../components/modals/UserModal'
 import MemberModal from '../components/modals/MemberModal'
 import ThemeSwitcherModal from '../components/modals/ThemeSwitcherModal'
 import CodeModal from '../components/modals/CodeModal'
+import LoginModal from '../components/modals/LoginModal'
+import SignupModal from '../components/modals/SignupModal'
 import { Easing } from 'react-native-reanimated'
 
 export interface ModalStackParams {
@@ -22,6 +24,8 @@ export interface ModalStackParams {
 	}
 	ThemeSwitcherModal: { theme: string }
 	CodeModal: undefined
+	LoginModal: undefined
+	SignupModal: undefined
 }
 
 const ModalConfigProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -31,6 +35,8 @@ const ModalConfigProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		MemberModal,
 		ThemeSwitcherModal,
 		CodeModal,
+		LoginModal,
+		SignupModal,
 	}
 	const defaultOptions: ModalOptions = {
 		animateInConfig: {

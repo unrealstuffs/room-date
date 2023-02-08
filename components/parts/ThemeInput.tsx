@@ -4,7 +4,7 @@ import Flex from '../styled/Flex.styled'
 import { StyledInput } from '../styled/Input.styled'
 import { AntDesign } from '@expo/vector-icons'
 import { useModal } from 'react-native-modalfy'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 
 const ThemeInput = ({ themeName }: { themeName: string }) => {
 	const { openModal } = useModal()

@@ -9,16 +9,17 @@ import { StyledInput } from '../styled/Input.styled'
 import { StyledButton } from '../styled/Button.styled'
 import Container from '../styled/Container.styled'
 import InviteInput from '../parts/InviteInput'
-import themes from '../../themes'
 import { useCreateGroup } from '../../hooks/useCreateGroup'
 import { useBottomSheetModal } from '@gorhom/bottom-sheet'
 import showToast from '../../utils/showToast'
+import { useTheme } from 'styled-components/native'
 
 const CreateGroupSchema = Yup.object().shape({
 	title: Yup.string().required('Название не указано'),
 })
 
 const FormCreateGroup = () => {
+	const theme = useTheme()
 	const { createGroup, inviteCode, status } = useCreateGroup()
 
 	const { dismiss } = useBottomSheetModal()
@@ -48,40 +49,40 @@ const FormCreateGroup = () => {
 					<Container
 						top={0}
 						bottom={0}
-						backgroundColor={themes.classic.colors.secondary}
+						backgroundColor={theme.colors.secondary}
 					>
 						<StyledText
-							color={themes.classic.colors.light}
+							color={theme.colors.light}
 							style={{ textAlign: 'center' }}
 						>
 							Создать группу
 						</StyledText>
 					</Container>
-					<Separator color={themes.classic.colors.dark} />
+					<Separator color={theme.colors.dark} />
 					<Container
 						top={0}
 						bottom={0}
-						backgroundColor={themes.classic.colors.secondary}
+						backgroundColor={theme.colors.secondary}
 					>
 						<StyledInput
 							borderColor={
 								errors.title && touched.title
-									? themes.classic.colors.danger
-									: themes.classic.colors.dark
+									? theme.colors.danger
+									: theme.colors.dark
 							}
-							color={themes.classic.colors.light}
+							color={theme.colors.light}
 							placeholder='Название...'
 							onChangeText={handleChange('title')}
 							onBlur={handleBlur('title')}
 							value={values.title}
-							placeholderTextColor={themes.classic.colors.dark}
+							placeholderTextColor={theme.colors.dark}
 						/>
 					</Container>
-					<Separator color={themes.classic.colors.dark} />
+					<Separator color={theme.colors.dark} />
 					<Container
 						top={0}
 						bottom={0}
-						backgroundColor={themes.classic.colors.secondary}
+						backgroundColor={theme.colors.secondary}
 					>
 						{status === 'success' ? (
 							<>
@@ -108,7 +109,7 @@ const FormCreateGroup = () => {
 							</>
 						) : (
 							<StyledButton
-								backgroundColor={themes.classic.colors.primary}
+								backgroundColor={theme.colors.primary}
 								onPress={() => handleSubmit()}
 								disabled={status === 'loading'}
 								style={{
@@ -118,7 +119,7 @@ const FormCreateGroup = () => {
 								<StyledText>
 									{status === 'loading' ? (
 										<ActivityIndicator
-											color={themes.classic.colors.light}
+											color={theme.colors.light}
 										/>
 									) : (
 										'Создать'
@@ -129,7 +130,7 @@ const FormCreateGroup = () => {
 					</Container>
 					{status === 'error' && (
 						<StyledText
-							color={themes.classic.colors.danger}
+							color={theme.colors.danger}
 							style={{ textAlign: 'center', marginBottom: 15 }}
 						>
 							Ошибка сервера, повторите попытку позже

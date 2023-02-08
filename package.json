@@ -1,12 +1,13 @@
 {
 	"name": "note-in-groups",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"scripts": {
 		"start": "expo start --dev-client",
 		"android": "expo run:android",
 		"dev": "npx expo start --dev-client",
 		"build:dev": "eas build --platform android --profile development",
 		"build:preview": "eas build --platform android --profile preview",
+		"build:prod": "eas build --platform android --profile production",
 		"ios": "expo run:ios",
 		"web": "expo start --web",
 		"test": "jest --watchAll"
@@ -21,6 +22,7 @@
 		"@react-native-firebase/app": "^16.5.0",
 		"@react-native-firebase/auth": "^16.5.0",
 		"@react-native-firebase/firestore": "^16.5.0",
+		"@react-native-firebase/storage": "^16.5.0",
 		"@react-native-google-signin/google-signin": "^9.0.2",
 		"@react-navigation/bottom-tabs": "^6.0.5",
 		"@react-navigation/native": "^6.0.2",
@@ -35,6 +37,7 @@
 		"expo-constants": "~14.0.2",
 		"expo-dev-client": "~2.0.1",
 		"expo-font": "~11.0.1",
+		"expo-image-picker": "~14.0.2",
 		"expo-linking": "~3.2.3",
 		"expo-splash-screen": "~0.17.5",
 		"expo-status-bar": "~1.4.2",
@@ -54,7 +57,8 @@
 		"react-native-web": "~0.18.9",
 		"react-redux": "^8.0.5",
 		"styled-components": "^5.3.6",
-		"yup": "^0.32.11"
+		"yup": "^0.32.11",
+		"expo-checkbox": "~2.2.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",

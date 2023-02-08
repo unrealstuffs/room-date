@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import React, { ReactNode } from 'react'
 import Container from '../components/styled/Container.styled'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme } from 'styled-components/native'
 import HeaderGroup from '../components/parts/HeaderGroup'
 import StyledText from '../components/styled/Text.styled'
 

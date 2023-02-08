@@ -14,19 +14,16 @@ import FeedScreen from '../screens/FeedScreen'
 import NotesScreen from '../screens/NotesScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import RootScreen from '../screens/RootScreen'
-import Avatar from '../components/parts/Avatar'
 import { useTypedSelector } from '../hooks/useTypedSelector'
-import HeaderRoot from '../components/parts/HeaderRoot'
-import { useTheme } from '../hooks/useTheme'
-import themes from '../themes'
+import { useTheme } from 'styled-components/native'
 import ScannerScreen from '../screens/ScannerScreen'
 import NoteScreen from '../screens/NoteScreen'
+import UserScreen from '../screens/user/UserScreen'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default function RootNavigator() {
 	const { user } = useTypedSelector(state => state.user)
-	const { openModal } = useModal()
 
 	return (
 		<Stack.Navigator initialRouteName='Root'>
@@ -40,32 +37,15 @@ export default function RootNavigator() {
 				</>
 			) : (
 				<>
-					<Stack.Screen
-						name='Root'
-						component={RootScreen}
-						options={() => ({
-							headerTitle: () => <HeaderRoot />,
-							headerRight: () => (
-								<Avatar
-									size={30}
-									uri={user?.photoURL}
-									onPress={() => openModal('UserModal')}
-								/>
-							),
-							headerShadowVisible: false,
-							headerStyle: {
-								backgroundColor:
-									themes.classic.colors.background,
-							},
-						})}
-					/>
+					<Stack.Screen name='Root' component={RootScreen} />
 					<Stack.Screen
 						name='Group'
-						component={BottomTabNavigator}
 						options={{ headerShown: false }}
+						component={BottomTabNavigator}
 					/>
 					<Stack.Group screenOptions={{ presentation: 'modal' }}>
 						<Stack.Screen name='Note' component={NoteScreen} />
+						<Stack.Screen name='User' component={UserScreen} />
 						<Stack.Screen
 							name='Scanner'
 							component={ScannerScreen}

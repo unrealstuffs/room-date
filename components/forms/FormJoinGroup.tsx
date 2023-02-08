@@ -1,9 +1,5 @@
-import { useEffect, useState } from 'react'
-import {
-	ActivityIndicator,
-	TouchableOpacity,
-	DeviceEventEmitter,
-} from 'react-native'
+import { useEffect } from 'react'
+import { ActivityIndicator, TouchableOpacity } from 'react-native'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 
@@ -13,19 +9,19 @@ import { StyledButton } from '../styled/Button.styled'
 import { StyledInput } from '../styled/Input.styled'
 import Container from '../styled/Container.styled'
 import { useGroupsActions } from '../../hooks/useGroupsActions'
-import themes from '../../themes'
 import { useBottomSheetModal } from '@gorhom/bottom-sheet'
 import Flex from '../styled/Flex.styled'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { RootStackScreenProps } from '../../navigation/types'
 import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { useTheme } from 'styled-components/native'
 
 const JoinGroupSchema = Yup.object().shape({
 	code: Yup.string().required('Код не указан'),
 })
 
 const FormJoinGroup = () => {
+	const theme = useTheme()
 	const { joinGroup, status } = useGroupsActions()
 	const { dismiss } = useBottomSheetModal()
 	const navigation = useNavigation()
@@ -56,20 +52,20 @@ const FormJoinGroup = () => {
 					<Container
 						top={0}
 						bottom={0}
-						backgroundColor={themes.classic.colors.secondary}
+						backgroundColor={theme.colors.secondary}
 					>
 						<StyledText
-							color={themes.classic.colors.light}
+							color={theme.colors.light}
 							style={{ textAlign: 'center' }}
 						>
 							Войти по коду приглашения
 						</StyledText>
 					</Container>
-					<Separator color={themes.classic.colors.dark} />
+					<Separator color={theme.colors.dark} />
 					<Container
 						top={0}
 						bottom={0}
-						backgroundColor={themes.classic.colors.secondary}
+						backgroundColor={theme.colors.secondary}
 					>
 						<Flex
 							alignItems='center'
@@ -79,16 +75,14 @@ const FormJoinGroup = () => {
 							<StyledInput
 								borderColor={
 									errors.code && touched.code
-										? themes.classic.colors.danger
-										: themes.classic.colors.dark
+										? theme.colors.danger
+										: theme.colors.dark
 								}
 								placeholder='Код приглашения...'
 								onChangeText={handleChange('code')}
 								onBlur={handleBlur('code')}
 								value={values.code}
-								placeholderTextColor={
-									themes.classic.colors.dark
-								}
+								placeholderTextColor={theme.colors.dark}
 								style={{ flexBasis: '87%' }}
 							/>
 							<TouchableOpacity
@@ -100,19 +94,19 @@ const FormJoinGroup = () => {
 								<AntDesign
 									name='qrcode'
 									size={30}
-									color={themes.classic.colors.light}
+									color={theme.colors.light}
 								/>
 							</TouchableOpacity>
 						</Flex>
 					</Container>
-					<Separator color={themes.classic.colors.dark} />
+					<Separator color={theme.colors.dark} />
 					<Container
 						top={0}
 						bottom={0}
-						backgroundColor={themes.classic.colors.secondary}
+						backgroundColor={theme.colors.secondary}
 					>
 						<StyledButton
-							backgroundColor={themes.classic.colors.primary}
+							backgroundColor={theme.colors.primary}
 							disabled={status === 'loading'}
 							onPress={() => {
 								handleSubmit()
@@ -124,7 +118,7 @@ const FormJoinGroup = () => {
 							<StyledText>
 								{status === 'loading' ? (
 									<ActivityIndicator
-										color={themes.classic.colors.light}
+										color={theme.colors.light}
 									/>
 								) : (
 									'Войти'
@@ -134,7 +128,7 @@ const FormJoinGroup = () => {
 					</Container>
 					{status === 'error' && (
 						<StyledText
-							color={themes.classic.colors.danger}
+							color={theme.colors.danger}
 							style={{ textAlign: 'center', marginBottom: 15 }}
 						>
 							Такой группы не существует
